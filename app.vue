@@ -1,0 +1,33 @@
+<template>
+  <div id="app" :class="globalStore.translate ? 'ar' : ''">
+    <NuxtRouteAnnouncer />
+    <NuxtLayout>
+      <NuxtPage />
+      <InteractiveBall />
+      <Dropdown />
+      <ContactMenu />
+      <Loading />
+      <DashboardSidebar
+        v-if="route.fullPath != '/' && route.fullPath != '/login'"
+      />
+      <DashboardGlobalAddMethod />
+    </NuxtLayout>
+  </div>
+</template>
+
+<script setup>
+const route = useRoute();
+const globalStore = useMyGlobalStore();
+watch(
+  () => globalStore.translate,
+  (newVal) => {
+    if (newVal) {
+      document.body.style.direction = "rtl";
+    } else {
+      document.body.style.direction = "ltr";
+    }
+  }
+);
+</script>
+
+<style lang="scss"></style>
