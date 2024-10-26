@@ -167,9 +167,10 @@ onMounted(() => {
 <style scoped lang="scss">
 .propertiesSection {
   margin-top: 153px;
+  margin-bottom: 30px;
 
   .title {
-    margin-bottom: 163px;
+    margin-bottom: 40px;
     @media (max-width: 767px) {
       margin-bottom: 70px;
     }

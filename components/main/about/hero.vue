@@ -48,7 +48,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 40px;
-  padding: 20px 0 20px 0;
+  padding: 20px 0;
   color: white;
   .title {
     font-size: 50px;
@@ -63,7 +63,7 @@ onMounted(() => {
     }
   }
   .text {
-    font-size: 17dvw;
+    font-size: 270px;
     text-align: center;
     font-weight: bold;
     background-image: url("/main/about/background.png");
@@ -73,6 +73,9 @@ onMounted(() => {
     color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
+    @media (max-width: 1399px) {
+      font-size: 17dvw;
+    }
   }
 }
 </style>

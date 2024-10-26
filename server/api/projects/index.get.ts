@@ -6,17 +6,17 @@ interface Project {
   location: string;
   createdAt: Date;
   updatedAt: Date;
-  image: any;
+  images: any;
 }
 
 export default defineEventHandler(async (event) => {
   const projects = await prisma.project.findMany();
-  const projectImages = await prisma.projectImage.findMany();
+  const projectsImages = await prisma.projectImage.findMany();
 
   const transformedProjects: Project[] = [];
 
   projects.forEach((project) => {
-    const projectImage = projectImages.find(
+    const projectImages = projectsImages.filter(
       (img) => img.projectId === project.id
     );
 
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
       location: project.location,
       createdAt: project.createdAt,
       updatedAt: project.updatedAt,
-      image: projectImage,
+      images: projectImages,
     };
 
     transformedProjects.push(newProject);

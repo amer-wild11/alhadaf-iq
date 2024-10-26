@@ -8,8 +8,13 @@
       <ContactMenu />
       <Loading />
       <DashboardSidebar
-        v-if="route.fullPath != '/' && route.fullPath != '/login'"
+        v-if="
+          route.fullPath != '/' &&
+          route.fullPath != '/login' &&
+          route.fullPath != '/projects'
+        "
       />
+      <MainProjectDetails />
       <DashboardGlobalAddMethod />
     </NuxtLayout>
   </div>

@@ -7,15 +7,25 @@
         </h1>
         <h1 class="ar-text" v-else><span>استكشف</span> <span>محفظتنا</span></h1>
       </div>
-      <div class="button" ref="button">
-        <span class="en-text" v-if="!globalStore.translate">all projects</span>
-        <span class="ar-text" v-else>كل المشاريع</span>
-      </div>
+      <NuxtLink to="projects">
+        <div class="button" ref="button">
+          <span class="en-text" v-if="!globalStore.translate"
+            >all projects</span
+          >
+          <span class="ar-text" v-else>كل المشاريع</span>
+        </div>
+      </NuxtLink>
     </div>
     <div class="projects">
-      <div class="project" v-for="(project, i) in projects" :key="i">
+      <div
+        class="project"
+        v-for="(project, i) in data.projects.slice(0, 6)"
+        :key="i"
+        v-if="data.projects.length > 0"
+        @click="setDetails(project)"
+      >
         <div class="background">
-          <img :src="project.image" alt="" />
+          <img :src="project.images[0].url" alt="" />
         </div>
         <div class="content">
           <div class="link">
@@ -34,49 +44,23 @@
 </template>
 
 <script setup>
-const projects = [
-  {
-    image: "/main/projects/2.png",
-    id: 2,
-    name: "Referans Göktürk",
-    location: "Istanbul, Turkey",
-  },
-  {
-    image: "/main/projects/1.png",
-    id: 3,
-    name: "Project 3",
-    location: "Location 3",
-  },
-  {
-    image: "/main/projects/1.png",
-    id: 3,
-    name: "Project 3",
-    location: "Location 3",
-  },
-  {
-    image: "/main/projects/2.png",
-    id: 3,
-    name: "Project 3",
-    location: "Location 3",
-  },
-  {
-    image: "/main/projects/1.png",
-    id: 3,
-    name: "Project 3",
-    location: "Location 3",
-  },
-  {
-    image: "/main/projects/2.png",
-    id: 3,
-    name: "Project 3",
-    location: "Location 3",
-  },
-];
+const { data } = await useFetch("/api/projects");
 
 const globalStore = useMyGlobalStore();
+const projectsStore = useMyProjectsStore();
 
 const title = ref("");
 const button = ref("");
+
+const setDetails = (project) => {
+  projectsStore.details = true;
+  const details = {
+    name: project.name,
+    location: project.location,
+    images: project.images,
+  };
+  projectsStore.projectDetails = details;
+};
 
 onMounted(() => {
   const tl = useGsap.timeline({
@@ -113,8 +97,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .projectsSection {
-  margin-top: 50px;
-  min-height: 100dvh;
+  margin: 50px auto;
   .header {
     display: flex;
     align-items: center;

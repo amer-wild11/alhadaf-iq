@@ -50,10 +50,12 @@ model property {
 }
 
 model partner {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  logo             Json
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @default(now())
+  providerPublicId String
 }
 
 model customer {
