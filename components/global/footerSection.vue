@@ -15,10 +15,16 @@
           >Quick Navigation</span
         >
         <span class="title ar-text" v-else>تنقل سريع</span>
-        <li>Home</li>
-        <li>Home</li>
-        <li>Home</li>
-        <li>Home</li>
+        <li
+          @click="scroll(section.id)"
+          v-for="(section, i) in sections"
+          :key="i"
+        >
+          <span class="en-text" v-if="!globalStore.translate">{{
+            section.name
+          }}</span>
+          <span class="ar-text" v-else>{{ section.translated }}</span>
+        </li>
       </ul>
       <div class="contact-info">
         <div class="title">
@@ -31,7 +37,7 @@
             لتغيير مستقبلك
           </span>
         </div>
-        <div class="button" @click="openContactMenu">
+        <div class="button contactMenuButton" @click="openContactMenu">
           <div class="icon">
             <img src="/main/icons/phone.png" alt="" />
           </div>
@@ -45,35 +51,10 @@
           <span class="web">alhadaf.com.iq</span>
         </div>
       </div>
-      <div class="subscribtion">
-        <h1 class="en-text" v-if="!globalStore.translate">
-          Subscribe to our news
-        </h1>
-        <h1 class="ar-text" v-else>أشترك لأخبارنا الجديدة</h1>
-        <p class="en-text" v-if="!globalStore.translate">
-          Stay informed and Never Miss a beat: Subscribe to Our Exclusive News
-          Updates!
-        </p>
-        <p v-else>
-          ابق على اطلاع ولا تفوت أي شيء: اشترك في تحديثاتنا الإخبارية الحصرية!
-        </p>
-        <div class="input" v-if="!globalStore.translate">
-          <input type="text" placeholder="Enter your email" />
-          <button>Subscribe</button>
-        </div>
-        <div class="input" v-else>
-          <input type="text" placeholder="أدخل بريدك الألكتروني" />
-          <button>اشترك</button>
-        </div>
-      </div>
+
       <div class="location">
         <div class="image">
-          <iframe
-            width="100%"
-            height="100%"
-            src="https://api.maptiler.com/maps/basic-v2/?key=WRNIEfjw6BryVMWHT3m8#10.0/33.3152/44.3661"
-          >
-          </iframe>
+          <CustomMap />
         </div>
         <pre class="location en-text" v-if="!globalStore.translate">
 Iraq, Baghdad
@@ -92,19 +73,67 @@ Turkey, Istanbul
 
 <script setup>
 const globalStore = useMyGlobalStore();
+
 const openContactMenu = () => {
-  globalStore.contactMenu = true;
+  globalStore.contactMenu = !globalStore.contactMenu;
+};
+
+const sections = [
+  {
+    id: "heroSection",
+    name: "Home",
+    translated: "الرئيسية",
+  },
+  {
+    id: "aboutSection",
+    name: "About Us",
+    translated: "عنا",
+  },
+  {
+    id: "projectsSection",
+    name: "Our projects",
+    translated: "مشاريعنا",
+  },
+  {
+    id: "investmentsSection",
+    name: "smart investment",
+    translated: "استثمار ذكي",
+  },
+  {
+    id: "advantagsSection",
+    name: "advantages",
+    translated: "المزايا",
+  },
+  {
+    id: "propertiesSection",
+    name: "properties",
+    translated: "الملكيات",
+  },
+  {
+    id: "partnersSection",
+    name: "partners",
+    translated: "الشركاء",
+  },
+];
+
+const scroll = (id) => {
+  useGsap.to(window, {
+    scrollTo: `#${id}`,
+    duration: 1, // تقليل المدة
+    ease: "power2.inOut", // يمكنك تجربة نوع أسهل لزيادة السلاسة
+  });
 };
 </script>
 
 <style scoped lang="scss">
 footer {
-  padding: 61px 46px 60px 20px;
+  // padding: 61px 46px 60px 20px;
+  padding: 40px;
   .container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 10%;
-    row-gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 50px;
+    row-gap: 40px;
   }
   .logo-slogan {
     display: flex;
@@ -120,11 +149,15 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    @media (max-width: 766px) {
+      align-items: center;
+    }
     .title {
       font-size: 21px;
     }
     li {
       font-weight: 700;
+      cursor: pointer;
     }
   }
   .contact-info {
@@ -145,6 +178,10 @@ footer {
       padding: 5px;
       width: fit-content;
       cursor: pointer;
+      * {
+        pointer-events: none;
+        user-select: none;
+      }
       .icon {
         width: 34px;
         height: 34px;
@@ -191,6 +228,15 @@ footer {
         border-radius: 50px;
         color: white;
       }
+    }
+  }
+  .location {
+    .image {
+      width: 100%;
+      height: 200px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid white;
     }
   }
 }

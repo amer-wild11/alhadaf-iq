@@ -21,17 +21,15 @@
     <div class="projects">
       <div class="project" v-for="project in filterdProjects" :key="project.id">
         <div class="edit-delete">
-          <div class="edit tool">
-            <Icon name="material-symbols:ink-pen" />
-          </div>
           <div class="delete tool">
-            <Icon name="material-symbols-light:delete-outline" />
+            <DashboardProjectsAlertAction :project="project" />
           </div>
         </div>
-        <div class="image">
-          <img :src="project.image" alt="" />
+
+        <div class="image" @click="setDetails(project)">
+          <img :src="project.images[0].url" alt="" />
         </div>
-        <div class="content">
+        <div class="content" @click="setDetails(project)">
           <div class="info">
             <span class="name">{{ project.name }}</span>
             <span class="location">{{ project.location }}</span>
@@ -43,44 +41,16 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useMyGlobalStore } from "~/stores/dashboard/global";
-
-// القيمة الخاصة بالبحث
 const searchValue = ref("");
 const globalStore = useMyGlobalStore();
-// قائمة المشاريع الأصلية
-const projects = [
-  {
-    image: "/main/projects/2.png",
-    id: 2,
-    name: "Referans Göktürk",
-    location: "Istanbul, Turkey",
-  },
-  {
-    image: "/main/projects/1.png",
-    id: 3,
-    name: "Project 3",
-    location: "Location 3",
-  },
-  {
-    image: "/main/projects/1.png",
-    id: 4,
-    name: "Project 4",
-    location: "Location 4",
-  },
-  {
-    image: "/main/projects/2.png",
-    id: 5,
-    name: "Project 5",
-    location: "Location 5",
-  },
-];
+const projectsStore = useMyProjectsStore();
 
-// نسخة مفلترة من المشاريع
-const filterdProjects = ref(projects);
+const filterdProjects = ref([]);
 
-// دالة البحث
+onNuxtReady(() => {
+  filterdProjects.value = projectsStore.projects;
+});
+
 const searchProjects = () => {
   const lowerCaseSearchTerm = searchValue.value.toLowerCase();
 
@@ -95,8 +65,19 @@ const searchProjects = () => {
     return nameMatches || locationMatches;
   });
 
-  // إذا كانت النتيجة فارغة، نعيد جميع المشاريع
   filterdProjects.value = filtered.length > 0 ? filtered : projects;
+};
+
+const setDetails = (project) => {
+  projectsStore.details = true;
+  const details = {
+    name: project.name,
+    location: project.location,
+    images: project.images,
+    desc: project.desc,
+    createdAt: project.createdAt,
+  };
+  projectsStore.projectDetails = details;
 };
 </script>
 
@@ -140,6 +121,7 @@ const searchProjects = () => {
     gap: 20px;
     row-gap: 10px;
     .project {
+      cursor: pointer;
       border-radius: 20px;
       overflow: hidden;
       position: relative;

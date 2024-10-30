@@ -1,7 +1,7 @@
 import formidable from "formidable";
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 import { createProject, createProjectImage } from "~/server/db/projects";
 import { uploadToCloudinary } from "~/utils/cloudinary.js";
 
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
   const { fields, files }: any = response;
 
   // تحقق من الحقول المطلوبة
-  if (!fields.name[0] || !fields.location[0]) {
+  if (!fields.name || !fields.location || !fields.desc) {
     return sendError(
       event,
       createError({
@@ -35,6 +35,7 @@ export default defineEventHandler(async (event) => {
   const project = await createProject({
     name: fields.name[0],
     location: fields.location[0],
+    desc: fields.desc[0],
   });
 
   // التعامل مع رفع الصور إلى Cloudinary
@@ -69,6 +70,7 @@ export default defineEventHandler(async (event) => {
       id: project.id,
       location: project.location,
       name: project.name,
+      desc: project.desc,
       createdAt: project.createdAt,
       updatedAt: project.updatedAt,
       images: projectImages, // الصور المرفوعة

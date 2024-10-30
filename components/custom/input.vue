@@ -3,11 +3,19 @@
     <input
       :type="props.type"
       :placeholder="props.placeholder"
+      :class="[props.error ? 'error' : '']"
+      :required="props.required"
+      v-model="inputValue"
+      @input="sentData"
       v-if="!globalStore.translate"
     />
     <input
-      :type="props.type"
-      :placeholder="props.translatedPlaceholder"
+      type="props.type"
+      :placeholder="props.placeholder"
+      :class="[props.error ? 'error' : '']"
+      :required="props.required"
+      v-model="inputValue"
+      @input="sentData"
       v-else
     />
   </div>
@@ -15,6 +23,14 @@
 
 <script setup>
 const globalStore = useMyGlobalStore();
+const emit = defineEmits();
+
+const inputValue = ref("");
+
+const sentData = () => {
+  emit("data-sent", inputValue.value);
+};
+
 const props = defineProps({
   type: {
     required: true,
@@ -27,6 +43,14 @@ const props = defineProps({
   translatedPlaceholder: {
     required: true,
     type: String,
+  },
+  error: {
+    type: Boolean,
+    required: false,
+  },
+  required: {
+    type: Boolean,
+    required: false,
   },
 });
 </script>
@@ -45,6 +69,9 @@ const props = defineProps({
     border-radius: 5px;
     font-size: 13px;
     font-weight: 300;
+    &.error {
+      border-color: rgb(165, 18, 18);
+    }
     &::placeholder {
       font-size: 13px;
       font-weight: 300;

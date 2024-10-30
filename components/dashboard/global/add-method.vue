@@ -4,35 +4,41 @@
       <Icon name="material-symbols:close-small" />
     </div>
     <label class="image" for="image-input">
-      <div class="images">
-        <img :src="imageSrc" alt="" />
-        <img :src="imageSrc" alt="" />
-        <img :src="imageSrc" alt="" />
-        <img :src="imageSrc" alt="" />
-        <img :src="imageSrc" alt="" />
-        <img :src="imageSrc" alt="" />
+      <div class="icon" v-if="images.length < 1">
+        <Icon name="material-symbols:imagesmode-outline-sharp" />
       </div>
-      <div class="icon">
-        <Icon name="material-symbols:imagesmode-outline" />
+      <div class="count" v-if="images.length > 1">
+        <span>+{{ images.length - 1 }}</span>
       </div>
-      <input type="file" id="image-input" @input="handleFileChange" />
+      <div class="mainImage">
+        <img ref="mainImage" src="" alt="" />
+      </div>
+      <input type="file" id="image-input" @input="handleFileChange" multiple />
     </label>
-    <form>
+    <form @submit.prevent="handleSubmit">
       <h1>Add a new project</h1>
+
       <CustomInput
         placeholder="Project Name"
         type="text"
         translated-placeholder="أسم المشروع"
+        :error="isError.name"
+        @data-sent="handleName"
       />
       <CustomInput
         placeholder="Project Location"
         type="text"
         translated-placeholder="أسم المشروع"
+        :error="isError.location"
+        @data-sent="handleLocation"
       />
-      <textarea placeholder="description"></textarea>
-      <div class="submit">
-        <span>Done</span>
-      </div>
+      <textarea
+        placeholder="description"
+        v-model="formData.description"
+      ></textarea>
+      <button>
+        <div class="submit">{{ buttonContent }}</div>
+      </button>
     </form>
   </div>
 </template>
@@ -41,21 +47,113 @@
 import { useMyGlobalStore } from "~/stores/dashboard/global";
 
 const globalStore = useMyGlobalStore();
+const projectsStore = useMyProjectsStore();
 const addMethod = ref("");
+const buttonContent = ref("Done");
 
-const imageSrc = ref(null);
+const mainImage = ref("");
+const images = ref([]);
+const imagesFiles = ref([]);
+
+const isError = ref({
+  name: false,
+  location: false,
+  description: false,
+});
+
+const formData = ref({
+  name: "",
+  location: "",
+  description: "",
+});
+
+const handleName = (data) => {
+  formData.value.name = data;
+};
+
+const handleLocation = (data) => {
+  formData.value.location = data;
+};
 
 const handleFileChange = (event) => {
-  const file = event.target.files[0];
-
+  const files = event.target.files;
+  const file = files[0];
   if (file) {
     const reader = new FileReader();
 
     reader.onload = (e) => {
-      imageSrc.value = e.target.result;
+      mainImage.value.src = e.target.result;
     };
 
     reader.readAsDataURL(file);
+  }
+  if (files) {
+    imagesFiles.value = files;
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        images.value.push(e.target.result);
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
+};
+
+const handleSubmit = async () => {
+  // إعادة تعيين الأخطاء
+  isError.value = {
+    name: false,
+    location: false,
+    description: false,
+  };
+
+  console.log(formData.value);
+
+  // التحقق من القيم المدخلة
+  if (formData.value.name == "") {
+    isError.value.name = true;
+  }
+  if (formData.value.location == "") {
+    isError.value.location = true;
+  }
+  if (formData.value.description == "") {
+    isError.value.description = true;
+  }
+
+  if (
+    formData.value.name !== "" &&
+    formData.value.location !== "" &&
+    formData.value.description !== "" &&
+    imagesFiles.value.length > 0
+  ) {
+    buttonContent.value = "Sending...";
+    const data = new FormData();
+
+    data.append("name", formData.value.name);
+    data.append("location", formData.value.location);
+    data.append("desc", formData.value.description);
+
+    Array.from(imagesFiles.value).forEach((file, index) => {
+      data.append(`image[${index}]`, file);
+    });
+
+    // أضف جميع الملفات إلى FormData
+
+    try {
+      const response = await $fetch("/api/projects", {
+        method: "POST",
+        body: data,
+      });
+      globalStore.addMethod = false;
+      projectsStore.projects.push(response.project);
+      console.log(response);
+      buttonContent.value = "Done";
+    } catch (error) {
+      buttonContent.value = "Done";
+      console.error("Error:", error);
+    }
   }
 };
 </script>
@@ -92,24 +190,16 @@ const handleFileChange = (event) => {
   .image {
     width: 400px;
     height: 300px;
-    background-color: lightgray;
+    border: 1px solid lightgray;
     border-radius: 10px;
     position: relative;
     cursor: pointer;
     overflow: hidden;
-    .images {
-      position: absolute;
-      top: 0;
-      left: 0;
+    .mainImage {
+      display: inline-block;
       width: 100%;
       height: 100%;
-      display: flex;
-      flex-wrap: wrap;
-      img {
-        object-fit: cover;
-        width: 60px;
-        height: 60px
-      }
+      object-fit: cover;
     }
     .icon {
       position: absolute;
@@ -117,7 +207,24 @@ const handleFileChange = (event) => {
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: 30px;
+      color: black;
+    }
+    .count {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 30px;
       color: white;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(0, 0, 0, 0.377);
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 3px;
+      font-weight: 600;
     }
     input {
       display: none;
@@ -157,6 +264,7 @@ const handleFileChange = (event) => {
       font-size: 14px;
       color: white;
       cursor: pointer;
+      user-select: none;
     }
   }
 }

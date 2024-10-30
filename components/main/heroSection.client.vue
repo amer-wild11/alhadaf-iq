@@ -53,7 +53,7 @@
                 </ul>
               </ul>
             </div>
-            <div class="map tool" @click="openContactMenu">
+            <div class="map contactMenuButton tool" @click="openContactMenu">
               <img src="/main/icons/map.png" alt="" />
             </div>
             <div class="tool dropdown-menu" @click="openDropdown">
@@ -410,7 +410,7 @@ onMounted(() => {
       }
       @media (max-width: 1024px) {
         .header {
-          background-color: white;
+          background-color: rgb(238, 238, 238);
         }
       }
       .header,

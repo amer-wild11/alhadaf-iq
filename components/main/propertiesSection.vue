@@ -18,10 +18,15 @@
     </div>
     <div class="properties">
       <MasonryContainer :cols="7" :item-width="214">
-        <MasonryItem v-for="(property, i) in properties" :key="i" :col-span="1">
+        <MasonryItem
+          v-for="(property, i) in propertiesStore.properties"
+          :key="i"
+          :col-span="1"
+          @click="setDetails(property)"
+        >
           <div class="property">
             <div class="image">
-              <img :src="property.image" alt="" />
+              <img :src="property.images[0].url" alt="" />
             </div>
             <div class="name">
               <span>{{ property.name }}</span>
@@ -40,103 +45,18 @@
 const title = ref("");
 const propertiesSection = ref("");
 const globalStore = useMyGlobalStore();
-const properties = [
-  {
-    id: "01",
-    name: "Queen Residence",
-    image: "/main/properties/1.png",
-  },
-  {
-    id: "02",
-    name: "Queen Residence",
-    image: "/main/properties/2.png",
-  },
-  {
-    id: "02",
-    name: "Queen Residence",
-    image: "/main/properties/2.png",
-  },
-  {
-    id: "02",
-    name: "Queen Residence",
-    image: "/main/properties/2.png",
-  },
-  {
-    id: "01",
-    name: "Queen Residence",
-    image: "/main/properties/1.png",
-  },
-  {
-    id: "02",
-    name: "Queen Residence",
-    image: "/main/properties/2.png",
-  },
-  {
-    id: "02",
-    name: "Queen Residence",
-    image: "/main/properties/2.png",
-  },
-  {
-    id: "01",
-    name: "Queen Residence",
-    image: "/main/properties/1.png",
-  },
-  {
-    id: "01",
-    name: "Queen Residence",
-    image: "/main/properties/1.png",
-  },
-  {
-    id: "01",
-    name: "Queen Residence",
-    image: "/main/properties/1.png",
-  },
-  {
-    id: "02",
-    name: "Queen Residence",
-    image: "/main/properties/2.png",
-  },
-  {
-    id: "01",
-    name: "Queen Residence",
-    image: "/main/properties/1.png",
-  },
-  {
-    id: "01",
-    name: "Queen Residence",
-    image: "/main/properties/1.png",
-  },
-  {
-    id: "02",
-    name: "Queen Residence",
-    image: "/main/properties/2.png",
-  },
-  {
-    id: "01",
-    name: "Queen Residence",
-    image: "/main/properties/1.png",
-  },
-  {
-    id: "02",
-    name: "Queen Residence",
-    image: "/main/properties/2.png",
-  },
-  {
-    id: "01",
-    name: "Queen Residence",
-    image: "/main/properties/1.png",
-  },
-  {
-    id: "02",
-    name: "Queen Residence",
-    image: "/main/properties/2.png",
-  },
-  {
-    id: "02",
-    name: "Queen Residence",
-    image: "/main/properties/2.png",
-  },
-];
+const propertiesStore = useMyPropertiesStore();
+
+const setDetails = (property) => {
+  propertiesStore.details = true;
+  const details = {
+    name: property.name,
+    images: property.images,
+    createdAt: property.createdAt,
+  };
+  propertiesStore.propertyDetails = details;
+};
+
 onMounted(() => {
   const tl = useGsap.timeline({
     scrollTrigger: {

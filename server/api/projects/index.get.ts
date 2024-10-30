@@ -4,6 +4,7 @@ interface Project {
   id: String;
   name: string;
   location: string;
+  desc: string;
   createdAt: Date;
   updatedAt: Date;
   images: any;
@@ -24,6 +25,7 @@ export default defineEventHandler(async (event) => {
       id: project.id,
       name: project.name,
       location: project.location,
+      desc: project.desc,
       createdAt: project.createdAt,
       updatedAt: project.updatedAt,
       images: projectImages,

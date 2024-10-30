@@ -9,12 +9,14 @@ onMounted(() => {
   document.addEventListener("mousemove", (e) => {
     const clientX = e.clientX;
     const clientY = e.clientY;
-    useGsap.to(ball.value, {
-      x: clientX,
-      y: clientY,
-      duration: 1,
-      ease: "power2",
-    });
+    if (ball.value) {
+      useGsap.to(ball.value, {
+        x: clientX,
+        y: clientY,
+        duration: 1,
+        ease: "power2",
+      });
+    }
   });
 });
 </script>

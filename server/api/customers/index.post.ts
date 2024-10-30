@@ -10,11 +10,10 @@ export default defineEventHandler(async (event) => {
       createError({ statusCode: 500, statusMessage: "Invalid params" })
     );
   }
-
   const data = {
     name,
     email,
-    phone,
+    phone: JSON.stringify(phone),
     message,
   };
 

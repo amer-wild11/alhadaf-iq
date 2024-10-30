@@ -15,6 +15,7 @@
         "
       />
       <MainProjectDetails />
+      <PropertyDetails />
       <DashboardGlobalAddMethod />
     </NuxtLayout>
   </div>
@@ -23,6 +24,7 @@
 <script setup>
 const route = useRoute();
 const globalStore = useMyGlobalStore();
+
 watch(
   () => globalStore.translate,
   (newVal) => {
@@ -33,6 +35,16 @@ watch(
     }
   }
 );
+
+const customersStore = useMyCustomersStore();
+const projectsStore = useMyProjectsStore();
+const partnersStore = useMyPartnersStore();
+const propertiesStore = useMyPropertiesStore();
+
+projectsStore.getProjects();
+partnersStore.getPartners();
+customersStore.getCustomers();
+propertiesStore.getProperties();
 </script>
 
 <style lang="scss"></style>

@@ -10,6 +10,7 @@ export const useMyGlobalStore = defineStore({
     isLoading: true,
     completeLoading: false,
     languages: false,
+    scroll: true,
   }),
   actions: {
     loading() {

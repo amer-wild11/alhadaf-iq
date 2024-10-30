@@ -33,8 +33,12 @@
         }"
         id="partners-slider"
       >
-        <SwiperSlide class="partner" v-for="partner in 10" :key="partner">
-          <img src="/logo-gray.png" alt="" />
+        <SwiperSlide
+          class="partner"
+          v-for="partner in partnersStore.partners"
+          :key="partner.id"
+        >
+          <img :src="partner.logo.url" alt="" />
         </SwiperSlide>
       </Swiper>
     </div>
@@ -45,6 +49,7 @@
 const title = ref("");
 const partnersSection = ref("");
 const globalStore = useMyGlobalStore();
+const partnersStore = useMyPartnersStore();
 const breakpoints = {
   0: {
     slidesPerView: 1,

@@ -1,6 +1,7 @@
 <template>
   <main class="dashboard-main">
-    <h1>properties</h1>
+    <DashboardProperties />
+    <DashboardPropertiesUpload />
   </main>
 </template>
 

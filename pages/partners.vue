@@ -1,13 +1,10 @@
 <template>
   <main class="dashboard-main">
-    <h1>partners</h1>
+    <DashboardPartners />
+    <DashboardPartnersUpload />
   </main>
 </template>
 
-<script lang="ts" setup>
+<script setup></script>
 
-</script>
-
-<style>
-
-</style>
+<style></style>

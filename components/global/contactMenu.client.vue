@@ -5,14 +5,9 @@
       <span class="span2"></span>
     </div>
     <div class="map">
-      <iframe
-        width="100%"
-        height="100%"
-        src="https://api.maptiler.com/maps/basic-v2/?key=WRNIEfjw6BryVMWHT3m8#10.0/33.3152/44.3661"
-      >
-      </iframe>
+      <CustomMap />
     </div>
-    <form>
+    <form @submit.prevent="postCustomer">
       <div class="title">
         <h1 class="en-text" v-if="!globalStore.translate">Have a question?</h1>
         <h1 class="ar-text" v-else>ألديك سؤال؟</h1>
@@ -27,22 +22,37 @@
         placeholder="Your Name"
         translated-placeholder="الأسم"
         type="text"
+        :required="true"
+        @data-sent="handleName"
       />
       <CustomInput
         placeholder="Your Email"
         translated-placeholder="البريد الألكتروني"
         type="email"
+        :required="true"
+        @data-sent="handleEmail"
       />
       <CustomInput
         placeholder="Your phone number"
         translated-placeholder="رقم الهاتف"
         type="number"
+        :required="true"
+        @data-sent="handlePhone"
       />
-      <textarea name="message" placeholder="Your Message"></textarea>
-      <div class="submit">
-        <span class="en-text" v-if="!globalStore.translate">send</span>
-        <span class="ar-text" v-else>أرسال</span>
-      </div>
+      <textarea
+        name="message"
+        placeholder="Your Message"
+        v-model="message"
+        required
+      ></textarea>
+      <button>
+        <div class="submit">
+          <span class="en-text" v-if="!globalStore.translate">{{
+            buttonContent
+          }}</span>
+          <span class="ar-text" v-else>{{ buttonContentAr }}</span>
+        </div>
+      </button>
     </form>
   </div>
 </template>
@@ -50,6 +60,12 @@
 <script setup>
 const globalStore = useMyGlobalStore();
 const contactMenu = ref("");
+const name = ref("");
+const email = ref("");
+const phone = ref("");
+const message = ref("");
+const buttonContent = ref("Send");
+const buttonContentAr = ref("أرسال");
 
 const close = () => {
   globalStore.contactMenu = false;
@@ -58,30 +74,82 @@ const close = () => {
 watch(
   () => globalStore.contactMenu,
   (newVal) => {
-    if (newVal) {
-      useGsap.to(contactMenu.value, {
-        bottom: 0,
-        scale: 1,
-        duration: 0.5,
-      });
-    } else if (!newVal) {
-      useGsap.to(contactMenu.value, {
-        bottom: "-100dvh",
-        scale: 0,
-        duration: 0.5,
-      });
+    if (newVal == true) {
+      if (contactMenu.value) {
+        useGsap.to(contactMenu.value, {
+          bottom: 0,
+          scale: 1,
+          duration: 0.5,
+        });
+      }
+    } else if (newVal == false) {
+      if (contactMenu.value) {
+        useGsap.to(contactMenu.value, {
+          bottom: "-100px",
+          scale: 0,
+          duration: 0.5,
+        });
+      }
     }
   }
 );
 
+const handleName = (data) => {
+  name.value = data;
+};
+const handleEmail = (data) => {
+  email.value = data;
+};
+const handlePhone = (data) => {
+  phone.value = data;
+};
+
+const postCustomer = async () => {
+  const body = {
+    name: name.value,
+    email: email.value,
+    phone: phone.value,
+    message: message.value,
+  };
+  try {
+    buttonContent.value = "Sending...";
+    buttonContentAr.value = "يتم الأرسال...";
+
+    const response = await $fetch("/api/customers", {
+      method: "post",
+      body,
+    });
+
+    buttonContent.value = "Done";
+    buttonContentAr.value = "تم الأرسال";
+
+    globalStore.contactMenu = false;
+    name.value = "";
+    email.value = "";
+    phone.value = "";
+    message.value = "";
+  } catch (err) {
+    buttonContentAr.value = "أرسال";
+    buttonContent.value = "Send";
+    console.error("Error: ", err);
+  }
+};
+
 onMounted(() => {
   document.addEventListener("click", (e) => {
-    let mapTool = document.querySelector(".tools .map");
+    let contactMenuButtons = document.querySelectorAll(".contactMenuButton");
+    let canOpen = ref(true);
+    if (contactMenuButtons) {
+      contactMenuButtons.forEach((button) => {
+        if (button.contains(e.target)) {
+          return (canOpen.value = false);
+        }
+      });
+    }
     if (
-      mapTool &&
       contactMenu.value &&
       !contactMenu.value.contains(e.target) &&
-      !mapTool.contains(e.target)
+      canOpen.value
     ) {
       globalStore.contactMenu = false;
     }
@@ -138,11 +206,12 @@ onMounted(() => {
   }
   .map {
     height: 100%;
-    background-color: rgb(192, 192, 192);
+    background-color: rgb(214, 212, 212);
     border-radius: 10px;
     flex-grow: 0.8;
     overflow: hidden;
     width: 80%;
+    position: relative;
     @media (max-width: 767px) {
       width: 100%;
     }

@@ -19,9 +19,9 @@
     <div class="projects">
       <div
         class="project"
-        v-for="(project, i) in data.projects.slice(0, 6)"
+        v-for="(project, i) in projectsStore.projects.slice(0, 6)"
         :key="i"
-        v-if="data.projects.length > 0"
+        v-if="projectsStore.projects.length > 0"
         @click="setDetails(project)"
       >
         <div class="background">
@@ -44,8 +44,6 @@
 </template>
 
 <script setup>
-const { data } = await useFetch("/api/projects");
-
 const globalStore = useMyGlobalStore();
 const projectsStore = useMyProjectsStore();
 
@@ -58,6 +56,8 @@ const setDetails = (project) => {
     name: project.name,
     location: project.location,
     images: project.images,
+    desc: project.desc,
+    createdAt: project.createdAt
   };
   projectsStore.projectDetails = details;
 };

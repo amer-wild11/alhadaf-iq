@@ -74,7 +74,7 @@ onMounted(() => {
     -webkit-background-clip: text;
     background-clip: text;
     @media (max-width: 1399px) {
-      font-size: 17dvw;
+    font-size: 17dvw;
     }
   }
 }

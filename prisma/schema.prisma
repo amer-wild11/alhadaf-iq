@@ -26,6 +26,7 @@ model project {
   id           String         @id @default(auto()) @map("_id") @db.ObjectId
   location     String
   name         String
+  desc         String
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @default(now())
   projectImage projectImage[]
@@ -42,11 +43,21 @@ model projectImage {
 }
 
 model property {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  link      String
-  location  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @default(now())
+  propertyImage propertyImage[]
+}
+
+model propertyImage {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @default(now())
+  url              String
+  propertyId       String   @db.ObjectId
+  property         property @relation(fields: [propertyId], references: [id])
+  providerPublicId String
 }
 
 model partner {

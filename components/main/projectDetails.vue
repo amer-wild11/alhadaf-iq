@@ -4,44 +4,51 @@
       <Icon name="material-symbols:close-rounded" />
     </div>
     <div class="images">
-      <div class="current">
-        <img
-          :src="projectsStore.projectDetails.images[0].url"
-          alt=""
-          v-if="projectsStore.projectDetails.images[0]"
-          ref="image"
-        />
-      </div>
-      <div class="others">
-        <div
-          class="image"
-          v-for="(image, i) in projectsStore.projectDetails.images"
-          :key="i"
-          v-if="projectsStore.projectDetails.images"
-          @click="changeCurrentImage(image.url)"
-        >
+      <Swiper
+        :effect="'creative'"
+        :autoplay="true"
+        :slides-per-view="1"
+        :space-between="20"
+      >
+        <SwiperSlide v-for="image in projectsStore.projectDetails.images">
           <img :src="image.url" alt="" />
-        </div>
-      </div>
+        </SwiperSlide>
+      </Swiper>
     </div>
     <div class="content">
-      <div class="name">
-        <span>{{ projectsStore.projectDetails.name }}</span>
-      </div>
-      <div class="location">
-        <div class="icon">
-          <Icon name="material-symbols:location-on-rounded" />
+      <div class="info">
+        <div class="name">
+          <span class="title">Project name</span>
+          <span>{{ projectsStore.projectDetails.name }}</span>
         </div>
-        <div class="value">
-          <span>{{ projectsStore.projectDetails.location }}</span>
+        <div class="location">
+          <div class="title">
+            <span>Location</span>
+          </div>
+          <div class="value">
+            <span>{{ projectsStore.projectDetails.location }}</span>
+          </div>
+        </div>
+        <div class="desc">
+          <span class="title">Description</span>
+          <span>{{ projectsStore.projectDetails.desc }}</span>
         </div>
       </div>
-      <div class="desc">
-        <span
-          >Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis,
-          amet obcaecati. Numquam rerum odit a minima dignissimos! A, error
-          mollitia!</span
-        >
+      <div class="date-info">
+        <div class="slogan">
+          <span>ALHADAF REAL ESTATE 2024</span>
+        </div>
+        <div class="date">
+          <span>{{
+            `${new Date(
+              projectsStore.projectDetails.createdAt
+            ).getFullYear()} ${new Date(
+              projectsStore.projectDetails.createdAt
+            ).toLocaleString("en", { month: "short" })} ${new Date(
+              projectsStore.projectDetails.createdAt
+            ).getDate()}`
+          }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -49,7 +56,6 @@
 
 <script setup>
 const projectsStore = useMyProjectsStore();
-const image = ref("");
 const detailsContainer = ref("");
 
 const close = () => {
@@ -64,26 +70,32 @@ watch(
       tl.to(detailsContainer.value, {
         display: "flex",
       });
-      tl.to(detailsContainer.value, {
-        opacity: 1,
-        top: "50%",
-      });
+      tl.to(
+        detailsContainer.value,
+        {
+          opacity: 1,
+          top: "50%",
+          duration: 0.2,
+        },
+        0.1
+      );
     } else {
       const tl = useGsap.timeline();
       tl.to(detailsContainer.value, {
         top: "60%",
         opacity: 0,
+        duration: 0.2,
       });
-      tl.to(detailsContainer.value, {
-        display: "none",
-      });
+      tl.to(
+        detailsContainer.value,
+        {
+          display: "none",
+        },
+        0.01
+      );
     }
   }
 );
-
-const changeCurrentImage = (url) => {
-  image.value.src = url;
-};
 </script>
 
 <style scoped lang="scss">
@@ -94,6 +106,7 @@ const changeCurrentImage = (url) => {
   transform: translate(-50%, -50%);
   background-color: white;
   width: 70%;
+  max-height: 90dvh;
   z-index: 999;
   border-radius: 10px;
   display: flex;
@@ -101,8 +114,11 @@ const changeCurrentImage = (url) => {
   padding: 30px;
   display: none;
   opacity: 0;
+  box-shadow: 1px 1px 10px lightgray;
+  display: none;
   @media (max-width: 912px) {
     flex-direction: column;
+    width: 90%;
   }
   .close {
     cursor: pointer;
@@ -119,60 +135,62 @@ const changeCurrentImage = (url) => {
     font-size: 25px;
   }
   .images {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    min-width: 50%;
-    .current {
-      width: 100%;
-      border-radius: 20px;
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
+    width: 60%;
+    @media (max-width: 912px) {
+      width: 80%;
+      margin: auto;
     }
-    .others {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      .image {
-        cursor: pointer;
-        img {
-          border-radius: 10px;
-          width: 100px;
-        }
-      }
+    img {
+      border-radius: 20px;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   }
   .content {
-    .name {
-      font-size: 20px;
-      font-weight: 600;
-      &::first-letter {
-        text-transform: uppercase;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+    .info {
+      flex-grow: 1;
+      .title {
+        display: block;
+        font-size: 22px;
+        color: rgb(119, 119, 119);
+      }
+      .name {
+        margin-bottom: 10px;
+        span:not(.title) {
+          font-weight: 400;
+          font-size: 19px;
+        }
+        &::first-letter {
+          text-transform: uppercase;
+        }
+      }
+      .location {
+        gap: 5px;
+        margin-bottom: 30px;
+        .value {
+          font-weight: 400;
+          font-size: 19px;
+        }
+      }
+      .desc {
+        &::first-letter {
+          text-transform: uppercase;
+        }
       }
     }
-    .location {
+    .date-info {
       display: flex;
       align-items: center;
-      gap: 5px;
-      color: rgb(71, 71, 71);
-      margin-bottom: 10px;
-      .value {
-        font-size: 15px;
-      }
-      .icon {
-        font-size: 20px;
-        transform: translateY(2px);
-      }
-    }
-    .desc {
-      font-size: 14px;
-      &::first-letter {
-        text-transform: uppercase;
-      }
+      justify-content: space-between;
+      font-size: 15px;
+      font-weight: bold;
+      color: rgba(0, 0, 0, 0.568);
     }
   }
 }

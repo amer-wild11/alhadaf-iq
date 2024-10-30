@@ -18,7 +18,14 @@ export default defineNuxtConfig({
     "nuxt-masonry",
     "@pinia/nuxt",
     "vue-masonry-css",
+    "@nuxtjs/leaflet",
+    "nuxt-maplibre",
+    "nuxt-mapbox",
   ],
+  mapbox: {
+    accessToken:
+      "pk.eyJ1IjoiYW1lci13aWxkMTEiLCJhIjoiY20ydW94M2F0MDM1ajJrcXFwbWU4cDA5byJ9.30Z2vT9TyfwDKSzTcv2AmA",
+  },
   css: ["~/assets/scss/main.scss"],
   vite: {
     css: {
@@ -31,6 +38,9 @@ export default defineNuxtConfig({
         },
       },
     },
+  },
+  shadcn: {
+    componentDir: "./components/ui",
   },
   gsap: {
     autoImport: true,

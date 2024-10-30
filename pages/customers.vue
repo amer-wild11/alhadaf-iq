@@ -1,6 +1,6 @@
 <template>
   <main class="dashboard-main">
-    <h1>customers</h1>
+    <DashboardCustomers />
   </main>
 </template>
 

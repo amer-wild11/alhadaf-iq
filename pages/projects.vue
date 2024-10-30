@@ -14,7 +14,7 @@
       <div class="projects">
         <div
           class="project"
-          v-for="project in data.projects"
+          v-for="project in projectsStore.projects"
           :key="project.id"
           @click="setDetails(project)"
         >
@@ -41,7 +41,6 @@
 </template>
 
 <script setup>
-const { data } = await useFetch("/api/projects");
 const projectsStore = useMyProjectsStore();
 
 onMounted(() => {
@@ -58,6 +57,8 @@ const setDetails = (project) => {
     name: project.name,
     location: project.location,
     images: project.images,
+    desc: project.desc,
+    createdAt: project.createdAt,
   };
   projectsStore.projectDetails = details;
 };

@@ -16,7 +16,11 @@
           <p>معنا</p>
         </span>
       </h1>
-      <div class="button" ref="button">
+      <div
+        class="button contactMenuButton"
+        ref="button"
+        @click="globalStore.contactMenu = true"
+      >
         <span ref="buttonContent">
           <span class="en-text" v-if="!globalStore.translate">
             Start Your Journey</span

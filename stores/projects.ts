@@ -8,8 +8,18 @@ export const useMyProjectsStore = defineStore({
       location: "",
       desc: "",
       images: [],
+      createdAt: "",
     },
     details: false,
+    projects: [] as any[],
   }),
-  actions: {},
+  actions: {
+    async getProjects() {
+      const response = await $fetch<{ projects: any[] }>("/api/projects");
+
+      if (response) {
+        this.projects = response.projects;
+      }
+    },
+  },
 });
