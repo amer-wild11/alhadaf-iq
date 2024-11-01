@@ -1,6 +1,6 @@
 <template>
   <div class="add-method" v-if="propertiesStore.upload" ref="addMethod">
-    <div class="close" @click="propertiesStore.upload = false">
+    <div class="close" @click="close">
       <Icon name="material-symbols:close-small" />
     </div>
     <label class="image" for="image-input">
@@ -53,6 +53,13 @@ const handleName = (data) => {
   formData.value.name = data;
 };
 
+const close = () => {
+  propertiesStore.upload = false;
+  formData.value.name = "";
+  images.value = [];
+  imagesFiles.value = [];
+};
+
 const handleFileChange = (event) => {
   const files = event.target.files;
   const file = files[0];
@@ -102,13 +109,18 @@ const handleSubmit = async () => {
     // أضف جميع الملفات إلى FormData
 
     try {
-      const response = await $fetch("/api/properties", {
-        method: "POST",
-        body: data,
-      });
+      const response = await $fetch(
+        "https://alhadaf-api.vercel.app/api/properties",
+        {
+          method: "post",
+          body: data,
+        }
+      );
       propertiesStore.upload = false;
-      propertiesStore.properties.push(response.property);
+      propertiesStore.filteredProperties.push(response.property);
       buttonContent.value = "Done";
+      images.value = [];
+      imagesFiles.value = [];
     } catch (error) {
       buttonContent.value = "Done";
       console.error("Error:", error);

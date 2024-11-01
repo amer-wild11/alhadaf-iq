@@ -2,7 +2,7 @@
   <div class="customers-container">
     <div class="header">
       <div class="title">
-        <h1>Customers</h1>
+        <h1>Customers ({{ customersStore.customers.length }})</h1>
       </div>
       <div class="tools">
         <div class="search">
@@ -16,27 +16,23 @@
       </div>
     </div>
     <div class="customers">
-      <DashboardCustomersTableData :customers="filterdCustomers" />
+      <DashboardCustomersTableData
+        :customers="customersStore.filteredCustomers"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
 const customersStore = useMyCustomersStore();
-const filterdCustomers = ref([]);
 const searchQuery = ref("");
 
 const filterCustomers = () => {
   const query = searchQuery.value.toLowerCase();
-  filterdCustomers.value = customersStore.customers.filter((customer) =>
-    customer.email.toLowerCase().includes(query)
+  customersStore.filteredCustomers = customersStore.customers.filter(
+    (customer) => customer.email.toLowerCase().includes(query)
   );
 };
-
-onMounted(() => {
-  filterdCustomers.value = customersStore.customers;
-});
 </script>
 
 <style scoped lang="scss">

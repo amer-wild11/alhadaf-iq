@@ -57,7 +57,7 @@ const setDetails = (project) => {
     location: project.location,
     images: project.images,
     desc: project.desc,
-    createdAt: project.createdAt
+    createdAt: project.createdAt,
   };
   projectsStore.projectDetails = details;
 };
@@ -98,6 +98,7 @@ onMounted(() => {
 <style scoped lang="scss">
 .projectsSection {
   margin: 50px auto;
+  min-height: 100dvh;
   .header {
     display: flex;
     align-items: center;
@@ -146,6 +147,16 @@ onMounted(() => {
       position: relative;
       overflow: hidden;
       cursor: pointer;
+      &::before {
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.555), transparent);
+        z-index: 2;
+      }
       &:hover {
         .icon {
           scale: 1 !important;
@@ -171,7 +182,7 @@ onMounted(() => {
       }
       .content {
         position: relative;
-        z-index: 1;
+        z-index: 3;
         display: flex;
         flex-direction: column;
         justify-content: space-between;

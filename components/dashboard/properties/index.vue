@@ -2,7 +2,7 @@
   <div class="propertiesContainer">
     <div class="header">
       <div class="title">
-        <h1>all properties</h1>
+        <h1>all properties ({{ propertiesStore.properties.length }})</h1>
       </div>
       <div class="tools">
         <div class="search">
@@ -18,10 +18,10 @@
         </div>
       </div>
     </div>
-    <MasonryContainer :cols="7" :item-width="216" :gap="10" class="properties">
+    <MasonryContainer :cols="7" :gap="10" class="properties">
       <MasonryItem
         class="property"
-        v-for="(property, i) in filterdProperties"
+        v-for="(property, i) in propertiesStore.filteredProperties"
         :key="i"
         :col-span="1"
       >
@@ -44,8 +44,6 @@
 </template>
 
 <script setup>
-const filterdProperties = ref([]);
-
 const propertiesStore = useMyPropertiesStore();
 const searchValue = ref("");
 
@@ -60,7 +58,7 @@ const searchProperties = () => {
     return nameMatches;
   });
 
-  propertiesStore.filterd =
+  propertiesStore.filteredProperties =
     filtered.length > 0 ? filtered : propertiesStore.properties;
 };
 
@@ -73,10 +71,6 @@ const setDetails = (property) => {
   };
   propertiesStore.propertyDetails = details;
 };
-
-onNuxtReady(() => {
-  filterdProperties.value = propertiesStore.properties;
-});
 </script>
 
 <style scoped lang="scss">
@@ -120,7 +114,6 @@ onNuxtReady(() => {
       justify-content: center;
     }
     .property {
-      width: 216px;
       cursor: pointer;
       border-radius: 10px;
       position: relative;
@@ -130,6 +123,7 @@ onNuxtReady(() => {
         pointer-events: none;
         width: calc(100%);
         img {
+          border-radius: 10px;
           width: 100%;
         }
       }

@@ -45,11 +45,14 @@ const props = defineProps({
 
 const deleteCustomer = async () => {
   const customerIndex = customersStore.customers.indexOf(props.customer);
-  const response = await $fetch(`/api/customers/${props.customer.id}`, {
-    method: "DELETE",
-  });
+  const response = await $fetch(
+    `https://alhadaf-api.vercel.app/api/customers/${props.customer.id}`,
+    {
+      method: "DELETE",
+    }
+  );
   if (response) {
-    customersStore.customers.splice(customerIndex, 1);
+    customersStore.filteredCustomers.splice(customerIndex, 1);
   }
 };
 </script>

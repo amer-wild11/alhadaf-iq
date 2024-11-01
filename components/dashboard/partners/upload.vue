@@ -1,6 +1,6 @@
 <template>
   <div class="add-partner" v-if="partnersStore.upload">
-    <div class="close" @click="partnersStore.upload = false">
+    <div class="close" @click="close">
       <Icon name="material-symbols:close-small" />
     </div>
     <form @submit.prevent="postPartner">
@@ -50,6 +50,12 @@ const logoChanged = (e) => {
   }
 };
 
+const close = () => {
+  partnersStore.upload = false;
+  name.value = "";
+  image.value.src = "";
+};
+
 const postPartner = async () => {
   if (name.value != "" && logo.value) {
     const body = new FormData();
@@ -58,14 +64,19 @@ const postPartner = async () => {
 
     try {
       buttonContent.value = "Sending...";
-      const response = await $fetch("/api/partners", {
-        method: "post",
-        body,
-      });
+      const response = await $fetch(
+        "https://alhadaf-api.vercel.app/api/partners",
+        {
+          method: "post",
+          body,
+        }
+      );
       if (response) {
         buttonContent.value = "Send";
         partnersStore.upload = false;
-        partnersStore.partners.push(response.partner);
+        partnersStore.filteredPartners.push(response.partner);
+        name.value = "";
+        image.value.src = "";
       }
     } catch (err) {
       buttonContent.value = "Send";

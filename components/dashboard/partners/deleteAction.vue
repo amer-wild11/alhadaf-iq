@@ -45,11 +45,14 @@ const props = defineProps({
 
 const deletePartner = async () => {
   const partnerIndex = partnersStore.partners.indexOf(props.partner);
-  const response = await $fetch(`/api/partners/${props.partner.id}`, {
-    method: "DELETE",
-  });
+  const response = await $fetch(
+    `https://alhadaf-api.vercel.app/api/partners/${props.partner.id}`,
+    {
+      method: "DELETE",
+    }
+  );
   if (response) {
-    partnersStore.partners.splice(partnerIndex, 1);
+    partnersStore.filteredPartners.splice(partnerIndex, 1);
   }
 };
 </script>

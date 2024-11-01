@@ -2,7 +2,7 @@
   <div class="partners-container">
     <div class="header">
       <div class="title">
-        <h1>Partners</h1>
+        <h1>Partners ({{partnersStore.partners.length}})</h1>
       </div>
       <div class="tools">
         <div class="search">
@@ -21,7 +21,7 @@
     <div class="partners">
       <div
         class="partner"
-        v-for="partner in filteredPartners"
+        v-for="partner in partnersStore.filteredPartners"
         :key="partner.id"
       >
         <div class="image">
@@ -43,11 +43,6 @@
 <script setup>
 const searchValue = ref("");
 const partnersStore = useMyPartnersStore();
-const filteredPartners = ref([]);
-
-onNuxtReady(() => {
-  filteredPartners.value = partnersStore.partners;
-});
 
 const searchPartners = () => {
   const lowerCaseSearchTerm = searchValue.value.toLowerCase();
@@ -60,7 +55,7 @@ const searchPartners = () => {
     return nameMatches;
   });
 
-  filteredPartners.value =
+  partnersStore.filteredPartners =
     filtered.length > 0 ? filtered : partnersStore.partners;
 };
 </script>

@@ -146,15 +146,17 @@
             </div>
           </div>
           <div class="footer">
-            <div class="catalog-downloader" ref="catalogDownloader">
-              <p class="en-text" v-if="!globalStore.translate">
-                catalog download
-              </p>
-              <p class="ar-text" v-else>تحميل الكاتالوج</p>
-              <div class="icon">
-                <img src="/main/icons/download.png" alt="" />
+            <a href="http://Alhadaf.com.iq/profile/profile.pdf">
+              <div class="catalog-downloader" ref="catalogDownloader">
+                <p class="en-text" v-if="!globalStore.translate">
+                  catalog download
+                </p>
+                <p class="ar-text" v-else>تحميل الكاتالوج</p>
+                <div class="icon">
+                  <img src="/main/icons/download.png" alt="" />
+                </div>
               </div>
-            </div>
+            </a>
           </div>
         </div>
       </div>

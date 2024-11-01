@@ -6,7 +6,7 @@ export default defineNuxtPlugin(() => {
 
   onMounted(() => {
     lenis = new Lenis({
-      duration: 1,
+      duration: 1.6,
     });
 
     function raf(time: number) {

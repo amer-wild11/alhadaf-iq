@@ -45,11 +45,14 @@ const props = defineProps({
 
 const deleteProject = async () => {
   const projectIndex = projectsStore.projects.indexOf(props.project);
-  const response = await $fetch(`/api/projects/${props.project.id}`, {
-    method: "DELETE",
-  });
+  const response = await $fetch(
+    `https://alhadaf-api.vercel.app/api/projects/${props.project.id}`,
+    {
+      method: "DELETE",
+    }
+  );
   if (response) {
-    projectsStore.projects.splice(projectIndex, 1);
+    projectsStore.filteredProjects.splice(projectIndex, 1);
   }
 };
 </script>

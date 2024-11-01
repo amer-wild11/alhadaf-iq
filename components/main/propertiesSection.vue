@@ -105,18 +105,30 @@ onMounted(() => {
     .property {
       position: relative;
       cursor: pointer;
-      border-radius: 30px;
+      border-radius: 10px;
+      overflow: hidden;
       width: 214px;
+      &::before {
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.555), transparent);
+        z-index: 2;
+      }
       img {
         width: 100%;
         object-fit: cover;
         height: auto;
-        border-radius: 30px;
+        border-radius: 10px;
       }
 
       .name,
       .icon {
         position: absolute;
+        z-index: 3;
       }
 
       .name {

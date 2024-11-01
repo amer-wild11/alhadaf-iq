@@ -78,16 +78,18 @@ watch(
       if (contactMenu.value) {
         useGsap.to(contactMenu.value, {
           bottom: 0,
-          scale: 1,
-          duration: 0.5,
+          opacity: 1,
+          display: "flex",
+          duration: 0.2,
         });
       }
     } else if (newVal == false) {
       if (contactMenu.value) {
         useGsap.to(contactMenu.value, {
           bottom: "-100px",
-          scale: 0,
-          duration: 0.5,
+          display: "none",
+          duration: 0.2,
+          opacity: 0,
         });
       }
     }
@@ -115,10 +117,13 @@ const postCustomer = async () => {
     buttonContent.value = "Sending...";
     buttonContentAr.value = "يتم الأرسال...";
 
-    const response = await $fetch("/api/customers", {
-      method: "post",
-      body,
-    });
+    const response = await $fetch(
+      "https://alhadaf-api.vercel.app/api/customers",
+      {
+        method: "post",
+        body,
+      }
+    );
 
     buttonContent.value = "Done";
     buttonContentAr.value = "تم الأرسال";
@@ -162,14 +167,14 @@ onMounted(() => {
   width: 100%;
   height: 70dvh;
   position: fixed;
-  bottom: -100dvh;
+  bottom: -100px;
   left: 0;
   background-color: white;
-  z-index: 8;
+  z-index: 999;
   padding: 35px;
-  display: flex;
+  display: none;
   gap: 3%;
-  scale: 0;
+  opacity: 0;
   @media (max-width: 767px) {
     flex-direction: column-reverse;
     bottom: unset;

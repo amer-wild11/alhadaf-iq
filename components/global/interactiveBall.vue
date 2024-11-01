@@ -32,7 +32,6 @@ onMounted(() => {
   z-index: 999;
   pointer-events: none;
   background-color: $lightly-main-color;
-  box-shadow: 0 0 10px 1px $lightly-main-color;
   @media (max-width: 767px) {
     display: none;
   }

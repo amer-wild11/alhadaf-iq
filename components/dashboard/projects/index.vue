@@ -2,7 +2,7 @@
   <section class="projectsSec">
     <div class="header">
       <div class="title">
-        <h1>all projects</h1>
+        <h1>all projects ({{ projectsStore.projects.length }})</h1>
       </div>
       <div class="tools">
         <div class="search">
@@ -19,7 +19,11 @@
       </div>
     </div>
     <div class="projects">
-      <div class="project" v-for="project in filterdProjects" :key="project.id">
+      <div
+        class="project"
+        v-for="project in projectsStore.filteredProjects"
+        :key="project.id"
+      >
         <div class="edit-delete">
           <div class="delete tool">
             <DashboardProjectsAlertAction :project="project" />
@@ -45,14 +49,9 @@ const searchValue = ref("");
 const globalStore = useMyGlobalStore();
 const projectsStore = useMyProjectsStore();
 
-const filterdProjects = ref([]);
-
-onNuxtReady(() => {
-  filterdProjects.value = projectsStore.projects;
-});
-
 const searchProjects = () => {
   const lowerCaseSearchTerm = searchValue.value.toLowerCase();
+  const projects = projectsStore.projects;
 
   const filtered = projects.filter((project) => {
     const nameMatches = project.name
@@ -65,7 +64,7 @@ const searchProjects = () => {
     return nameMatches || locationMatches;
   });
 
-  filterdProjects.value = filtered.length > 0 ? filtered : projects;
+  projectsStore.filteredProjects = filtered.length > 0 ? filtered : projects;
 };
 
 const setDetails = (project) => {
@@ -132,6 +131,16 @@ const setDetails = (project) => {
       justify-content: space-between;
       padding: 10px;
       color: white;
+      &::before {
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.555), transparent);
+        z-index: 2;
+      }
       .image {
         position: absolute;
         top: 0;
@@ -148,7 +157,7 @@ const setDetails = (project) => {
       }
       .edit-delete {
         position: relative;
-        z-index: 1;
+        z-index: 3;
         display: flex;
         align-items: center;
         gap: 10px;
@@ -177,7 +186,7 @@ const setDetails = (project) => {
         }
       }
       .content {
-        z-index: 1;
+        z-index: 3;
         position: relative;
         .info {
           display: flex;

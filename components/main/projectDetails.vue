@@ -107,15 +107,14 @@ watch(
   background-color: white;
   width: 70%;
   max-height: 90dvh;
-  z-index: 999;
   border-radius: 10px;
-  display: flex;
   gap: 20px;
   padding: 30px;
-  display: none;
   opacity: 0;
   box-shadow: 1px 1px 10px lightgray;
   display: none;
+  z-index: 999;
+  overflow: auto;
   @media (max-width: 912px) {
     flex-direction: column;
     width: 90%;
@@ -179,6 +178,7 @@ watch(
         }
       }
       .desc {
+        word-break: break-all;
         &::first-letter {
           text-transform: uppercase;
         }

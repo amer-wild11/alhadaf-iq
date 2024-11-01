@@ -97,7 +97,7 @@ watch(
   max-height: 90dvh;
   z-index: 999;
   border-radius: 10px;
-  display: flex;
+  display: none;
   gap: 20px;
   opacity: 0;
   padding: 30px;

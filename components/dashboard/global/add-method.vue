@@ -1,6 +1,6 @@
 <template>
   <div class="add-method" v-if="globalStore.addMethod" ref="addMethod">
-    <div class="close" @click="globalStore.addMethod = false">
+    <div class="close" @click="close">
       <Icon name="material-symbols:close-small" />
     </div>
     <label class="image" for="image-input">
@@ -66,6 +66,15 @@ const formData = ref({
   location: "",
   description: "",
 });
+
+const close = () => {
+  globalStore.addMethod = false;
+  images.value = [];
+  imagesFiles.value = [];
+  formData.value.name = "";
+  formData.value.location = "";
+  formData.value.description = "";
+};
 
 const handleName = (data) => {
   formData.value.name = data;
@@ -142,14 +151,19 @@ const handleSubmit = async () => {
     // أضف جميع الملفات إلى FormData
 
     try {
-      const response = await $fetch("/api/projects", {
-        method: "POST",
-        body: data,
-      });
+      const response = await $fetch(
+        "https://alhadaf-api.vercel.app/api/projects",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
       globalStore.addMethod = false;
-      projectsStore.projects.push(response.project);
-      console.log(response);
+      projectsStore.filteredProjects.push(response.project);
       buttonContent.value = "Done";
+      formData.value.description = "";
+      images.value = [];
+      imagesFiles.value = [];
     } catch (error) {
       buttonContent.value = "Done";
       console.error("Error:", error);

@@ -45,11 +45,11 @@ const props = defineProps({
 
 const deleteProperty = async () => {
   const propertyIndex = propertiesStore.properties.indexOf(props.property);
-  const response = await $fetch(`/api/properties/${props.property.id}`, {
+  const response = await $fetch(`https://alhadaf-api.vercel.app/api/properties/${props.property.id}`, {
     method: "DELETE",
   });
   if (response) {
-    propertiesStore.properties.splice(propertyIndex, 1);
+    propertiesStore.filteredProperties.splice(propertyIndex, 1);
   }
 };
 </script>
