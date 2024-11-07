@@ -3,14 +3,14 @@
     <div class="background" ref="bgImage">
       <video
         ref="bgVideo"
-        src="/main/about-background.mp4"
+        src="~/public/main/about-background.mp4"
         autoplay
         loop
         muted
       ></video>
     </div>
     <div class="text">
-      <div ref="textWrapper" class="text-wrapper container">
+      <div ref="textWrapper" class="text-wrapper">
         <p ref="text" class="scrolling-text">
           <span class="en-text" v-if="!globalStore.translate">
             We aim to lead in real estate by delivering unique, value-adding
@@ -49,68 +49,113 @@ onMounted(() => {
   const textWidth = text.value.offsetWidth; // عرض النص
   const wrapperWidth = textWrapper.value.offsetWidth; // عرض منطقة النص
 
-  useGsap.to(bgVideo.value, {
-    currentTime: 20, // تعيين الفيديو ليبدأ من الثانية 20
-    duration: 0, // لا نحتاج مدة هنا لأننا نريد فقط ضبط الوقت فوراً
-    onComplete: () => {
-      bgVideo.value.play(); // تشغيل الفيديو إذا كان متوقفاً بعد التعديل
-    },
-  });
+  const animateText = () => {
+    // تحريك النص إلى الجهة اليسرى بمقدار عرضه
+    if (text.value) {
+      useGsap.to(text.value, {
+        x: `-=${textWidth}`, // تحريك النص خارج الشاشة
+        duration: 14, // مدة الحركة
+        ease: "none",
+        onComplete: () => {
+          // عند انتهاء الحركة، نعيد النص إلى موضعه الأصلي
+          useGsap.set(text.value, { x: wrapperWidth });
+          animateText(); // إعادة تنفيذ الحركة
+        },
+      });
+    }
+  };
 
-  useGsap.to([text.value, textClone.value], {
-    x: `+=${textWidth}`, // تحريك النص إلى الجهة اليسرى بمقدار عرضه
-    duration: 14, // مدة الحركة
-    ease: "none", // الحركة يجب أن تكون ثابتة ومستقرة
-    repeat: -1, // تكرار لانهائي
-    modifiers: {
-      x: (x) => {
-        // في حال خروج النص من الجهة اليسرى، يرجع النص من الجهة اليمنى
-        return (
-          "-" +
-          useGsap.utils.wrap(-textWidth, wrapperWidth, parseFloat(x)) +
-          "px"
-        );
-      },
-    },
-  });
+  // بدء الحركة
+  animateText();
+
+  // إضافة نص آخر للتحريك (النص المكرر)
+  const animateTextClone = () => {
+    // تحريك النص المستنسخ
+    if (textClone.value) {
+      useGsap.to(textClone.value, {
+        x: `-=${textWidth}`, // تحريك النص المستنسخ
+        duration: 14,
+        ease: "none",
+        onComplete: () => {
+          useGsap.set(textClone.value, { x: wrapperWidth });
+          animateTextClone(); // إعادة تنفيذ الحركة
+        },
+      });
+    }
+  };
+
+  // بدء حركة النص المستنسخ
+  animateTextClone();
 
   const tl = useGsap.timeline();
-  tl.to(bgImage.value, {
-    y: 0,
-    scale: 1,
-    borderRadius: 0,
-    scrollTrigger: {
-      trigger: aboutSection.value,
-      scrub: 1,
-      end: "bottom bottom",
-    },
-  });
+  if (bgImage.value && bgVideo.value) {
+    tl.to(bgImage.value, {
+      y: 0,
+      scale: 1,
+      borderRadius: 0,
+      scrollTrigger: {
+        trigger: aboutSection.value,
+        scrub: 1,
+        end: "bottom bottom",
+      },
+    });
+    tl.to(bgVideo.value, {
+      borderRadius: 0,
+      scrollTrigger: {
+        trigger: aboutSection.value,
+        scrub: 1,
+        end: "bottom bottom",
+      },
+    });
 
-  tl.to(bgVideo.value, {
-    borderRadius: 0,
-    scrollTrigger: {
-      trigger: aboutSection.value,
-      scrub: 1,
-      end: "bottom bottom",
-    },
-  });
+    tl.to(bgVideo.value, {
+      width: "90%",
+      duration: 1,
+      delay: 0.2,
+      scrollTrigger: {
+        trigger: aboutSection.value,
+        scrub: 1,
+        start: "90% 50%",
+      },
+    });
 
-  tl.to(bgVideo.value, {
-    width: "90%",
-    duration: 1,
-    delay: 0.2,
-    scrollTrigger: {
-      trigger: aboutSection.value,
-      scrub: 1,
-      start: "90% 50%",
-    },
-  });
+    tl.to(bgImage.value, {
+      y: 0,
+      scale: 1,
+      borderRadius: 0,
+      scrollTrigger: {
+        trigger: aboutSection.value,
+        scrub: 1,
+        end: "bottom bottom",
+      },
+    });
+
+    tl.to(bgVideo.value, {
+      borderRadius: 0,
+      scrollTrigger: {
+        trigger: aboutSection.value,
+        scrub: 1,
+        end: "bottom bottom",
+      },
+    });
+
+    tl.to(bgVideo.value, {
+      width: "90%",
+      duration: 1,
+      delay: 0.2,
+      scrollTrigger: {
+        trigger: aboutSection.value,
+        scrub: 1,
+        start: "90% 50%",
+      },
+    });
+  }
 });
 </script>
 
 <style scoped lang="scss">
 .about {
-  height: 100dvh;
+  height: 100vh;
   width: 100%;
   position: relative;
   display: flex;

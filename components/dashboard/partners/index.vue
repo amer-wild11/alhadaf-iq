@@ -2,7 +2,7 @@
   <div class="partners-container">
     <div class="header">
       <div class="title">
-        <h1>Partners ({{partnersStore.partners.length}})</h1>
+        <h1>Partners ({{ partnersStore.partners.length }})</h1>
       </div>
       <div class="tools">
         <div class="search">
@@ -68,12 +68,20 @@ const searchPartners = () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media (max-width: 767px) {
+      flex-direction: column;
+      justify-content: start;
+      align-items: start;
+    }
     .title {
       color: $dash-text-color;
       font-weight: bold;
       h1 {
         font-size: 30px;
         text-transform: capitalize;
+        @media (max-width: 767px) {
+          font-size: 25px;
+        }
       }
     }
     .tools {

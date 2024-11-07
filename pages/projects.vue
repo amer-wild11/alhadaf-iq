@@ -3,7 +3,8 @@
     <div class="projects-list">
       <div class="header">
         <div class="title">
-          <h1>Our projects</h1>
+          <h1 v-if="!globalStore.translate">Our projects</h1>
+          <h1 v-else>مشاريعنا</h1>
         </div>
         <div class="close">
           <NuxtLink to="/">
@@ -42,6 +43,7 @@
 
 <script setup>
 const projectsStore = useMyProjectsStore();
+const globalStore = useMyGlobalStore();
 
 onMounted(() => {
   useGsap.from(".projects-list .projects .project", {
@@ -56,8 +58,12 @@ const setDetails = (project) => {
   const details = {
     name: project.name,
     location: project.location,
-    images: project.images,
     desc: project.desc,
+    images: project.images,
+    translated_name: project.translated_name,
+    translated_location: project.translated_location,
+    translated_desc: project.translated_desc,
+    images: project.images,
     createdAt: project.createdAt,
   };
   projectsStore.projectDetails = details;
@@ -96,6 +102,12 @@ main {
       grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
       gap: 10px;
       padding: 20px;
+      @media (max-width: 767px) {
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      }
+      @media (max-width: 400px) {
+        grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+      }
       .project {
         height: 300px;
         position: relative;

@@ -4,11 +4,34 @@
       <Icon name="material-symbols:close-rounded" />
     </div>
     <div class="images">
+      <div
+        class="controlsContainer"
+        v-if="propertiesStore.propertyDetails.images.length > 1"
+      >
+        <div class="controls" v-if="globalStore.translate">
+          <div class="control next" @click="swiper.slideNext()">
+            <Icon name="material-symbols:chevron-right" />
+          </div>
+          <div class="control prev" @click="swiper.slidePrev()">
+            <Icon name="material-symbols:chevron-left" />
+          </div>
+        </div>
+        <div class="controls" v-else>
+          <div class="control prev" @click="swiper.slidePrev()">
+            <Icon name="material-symbols:chevron-left" />
+          </div>
+          <div class="control next" @click="swiper.slideNext()">
+            <Icon name="material-symbols:chevron-right" />
+          </div>
+        </div>
+      </div>
       <Swiper
         :effect="'creative'"
         :autoplay="true"
         :slides-per-view="1"
         :space-between="20"
+        id="propertyDetailsImagesSlider"
+        :style="{ direction: globalStore.translate ? 'ltr' : '' }"
       >
         <SwiperSlide v-for="image in propertiesStore.propertyDetails.images">
           <img :src="image.url" alt="" />
@@ -18,8 +41,16 @@
     <div class="content">
       <div class="info">
         <div class="name">
-          <span class="title">Property name</span>
-          <span>{{ propertiesStore.propertyDetails.name }}</span>
+          <span class="title en-text" v-if="!globalStore.translate"
+            >Property name</span
+          >
+          <span class="title ar-text" v-else>اسم الملكية</span>
+          <span class="en-text" v-if="!globalStore.translate">{{
+            propertiesStore.propertyDetails.name
+          }}</span>
+          <span class="ar-text" v-else>{{
+            propertiesStore.propertyDetails.translated_name
+          }}</span>
         </div>
       </div>
       <div class="date-info">
@@ -45,10 +76,16 @@
 <script setup>
 const propertiesStore = useMyPropertiesStore();
 const detailsContainer = ref("");
+const swiper = ref("");
+const globalStore = useMyGlobalStore();
 
 const close = () => {
   propertiesStore.details = false;
 };
+
+onMounted(() => {
+  swiper.value = document.querySelector("#propertyDetailsImagesSlider").swiper;
+});
 
 watch(
   () => propertiesStore.details,
@@ -93,7 +130,6 @@ watch(
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-  width: 70%;
   max-height: 90dvh;
   z-index: 999;
   border-radius: 10px;
@@ -102,6 +138,7 @@ watch(
   opacity: 0;
   padding: 30px;
   box-shadow: 1px 1px 10px lightgray;
+  overflow: auto;
   @media (max-width: 912px) {
     flex-direction: column;
     width: 90%;
@@ -119,18 +156,73 @@ watch(
     align-items: center;
     justify-content: center;
     font-size: 25px;
+    z-index: 1;
   }
   .images {
-    width: 60%;
+    width: 400px;
+    border-radius: 20px;
+    position: relative;
     @media (max-width: 912px) {
-      width: 80%;
+      width: 300px;
       margin: auto;
+    }
+    @media (max-width: 473px) {
+      width: 230px;
     }
     img {
       border-radius: 20px;
+      max-height: 700px;
       width: 100%;
-      max-height: 500px;
       object-fit: cover;
+      margin: auto;
+      border: 1px solid rgb(216, 215, 215);
+      @media (max-width: 767px) {
+        width: 100%;
+        max-height: 500px;
+      }
+    }
+    .controls {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 20;
+      padding: 0 10px;
+      .control {
+        cursor: pointer;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        color: black;
+        border: 1px solid lightgray;
+        font-size: 50px;
+        @media (max-width: 767px) {
+          width: 30px;
+          height: 30px;
+          font-size: 30px;
+        }
+        &.next {
+          .iconify {
+            transform: translateX(3px);
+          }
+        }
+        &.prev {
+          .iconify {
+            transform: translateX(-3px);
+          }
+        }
+      }
+      @media (max-width: 767px) {
+        font-size: 46px;
+      }
     }
   }
   .content {
@@ -177,6 +269,11 @@ watch(
       font-size: 15px;
       font-weight: bold;
       color: rgba(0, 0, 0, 0.568);
+      @media (max-width: 436px) {
+        flex-direction: column;
+        align-items: start;
+        justify-content: start;
+      }
     }
   }
 }

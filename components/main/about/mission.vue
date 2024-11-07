@@ -2,7 +2,7 @@
   <div class="ourMission container" ref="missionContainer">
     <div class="text">
       <div class="first text-content">
-        <span>
+        <span v-if="!globalStore.translate" class="en-text">
           <p>
             At Al-Hadaf Company, we believe that innovation and excellence are
           </p>
@@ -16,13 +16,26 @@
             properties.
           </p>
         </span>
+        <span v-else class="ar-text">
+          <p>
+            في شركة الهدف، نؤمن أن الابتكار والتميز هما أساس النجاح في عالم
+            العقارات.
+          </p>
+          <p>منذ تأسيسنا في عام 2017، ركزنا على هدف واحد:</p>
+          <p>
+            تقديم أفضل الحلول العقارية التي تجمع بين التصميم العصري والجودة
+            العالية،
+          </p>
+          <p>لتحقيق أحلام عملائنا بامتلاك العقار المثالي.</p>
+        </span>
       </div>
       <div class="second text-content haveTitle">
         <div class="title">
-          <h1>our vision</h1>
+          <h1 class="en-text" v-if="!globalStore.translate">our vision</h1>
+          <h1 class="ar-text" v-else>رؤيتنا</h1>
         </div>
         <div class="content">
-          <span>
+          <span class="en-text" v-if="!globalStore.translate">
             <p>
               We aspire to be the leading company in real estate development,
             </p>
@@ -32,14 +45,23 @@
             </p>
             <p>value to the communities we serve.</p>
           </span>
+          <span class="ar-text" v-else>
+            <p>
+              نسعى لأن نكون الشركة الرائدة في تطوير وتسويق واستثمار العقارات،
+            </p>
+            <p>
+              من خلال تقديم مشاريع فريدة تضيف قيمة حقيقية للمجتمعات التي نخدمها.
+            </p>
+          </span>
         </div>
       </div>
       <div class="third text-content haveTitle">
         <div class="title">
-          <h1>our mission</h1>
+          <h1 class="en-text" v-if="!globalStore.translate">our mission</h1>
+          <h1 class="ar-text" v-else>مهمتنا</h1>
         </div>
         <div class="content">
-          <span>
+          <span class="en-text" v-if="!globalStore.translate">
             <p>
               We strive to provide innovative and diverse real estate solutions
             </p>
@@ -52,6 +74,11 @@
               at all stages of work.
             </p>
           </span>
+          <span class="ar-text" v-else>
+            <p>نسعى لتقديم حلول عقارية مبتكرة ومتنوعة تلبي احتياجات عملائنا</p>
+            <p>وتفوق توقعاتهم، عبر الالتزام بأعلى معايير الجودة والشفافية</p>
+            <p>في جميع مراحل العمل.</p>
+          </span>
         </div>
       </div>
     </div>
@@ -59,6 +86,7 @@
 </template>
 
 <script setup>
+const globalStore = useMyGlobalStore();
 const missionContainer = ref("");
 onMounted(() => {
   const tl = useGsap.timeline({

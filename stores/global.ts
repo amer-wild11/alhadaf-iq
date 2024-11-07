@@ -11,6 +11,11 @@ export const useMyGlobalStore = defineStore({
     completeLoading: false,
     languages: false,
     scroll: true,
+    error: {
+      title: "",
+      desc: "",
+      show: false,
+    },
   }),
   actions: {
     loading() {
@@ -36,6 +41,16 @@ export const useMyGlobalStore = defineStore({
           }
         }, 10);
       }
+    },
+    callError(errorInfo: any) {
+      this.error.show = true;
+      this.error.title = errorInfo.title;
+      this.error.desc = errorInfo.desc;
+      setTimeout(() => {
+        this.error.show = false;
+        this.error.title = "";
+        this.error.desc = "";
+      }, 3000);
     },
   },
   getters: {

@@ -53,7 +53,9 @@ const logoChanged = (e) => {
 const close = () => {
   partnersStore.upload = false;
   name.value = "";
-  image.value.src = "";
+  if (image.value.src) {
+    image.value.src = "";
+  }
 };
 
 const postPartner = async () => {
@@ -98,6 +100,8 @@ const postPartner = async () => {
   border-radius: 10px;
   border: 1px solid black;
   padding: 20px;
+  background-color: white;
+  z-index: 999;
   .close {
     position: absolute;
     top: 5px;
@@ -116,6 +120,10 @@ const postPartner = async () => {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
+
+    @media (max-width: 767px) {
+      flex-direction: column;
+    }
     label {
       background-color: rgb(231, 231, 231);
       border-radius: 10px;
@@ -123,6 +131,7 @@ const postPartner = async () => {
       position: relative;
       padding: 10px;
       min-width: 200px;
+      min-height: 100px;
       .icon {
         position: absolute;
         top: 50%;

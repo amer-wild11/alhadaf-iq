@@ -25,6 +25,14 @@
         :error="isError.name"
         @data-sent="handleName"
       />
+      <CustomInput
+        placeholder="Translated project name"
+        type="text"
+        translated-placeholder="أسم المشروع"
+        :error="isError.name"
+        @data-sent="handleTranslatedName"
+        :required="true"
+      />
       <button>
         <div class="submit">{{ buttonContent }}</div>
       </button>
@@ -47,10 +55,14 @@ const isError = ref({
 
 const formData = ref({
   name: "",
+  translated_name: "",
 });
 
 const handleName = (data) => {
   formData.value.name = data;
+};
+const handleTranslatedName = (data) => {
+  formData.value.translated_name = data;
 };
 
 const close = () => {
@@ -101,6 +113,7 @@ const handleSubmit = async () => {
     const data = new FormData();
 
     data.append("name", formData.value.name);
+    data.append("translated_name", formData.value.translated_name);
 
     Array.from(imagesFiles.value).forEach((file, index) => {
       data.append(`image[${index}]`, file);
@@ -144,6 +157,9 @@ const handleSubmit = async () => {
   transform: translate(-50%, -50%);
   width: 90%;
   max-width: 767px;
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
   .close {
     position: absolute;
     top: 5px;
@@ -166,6 +182,9 @@ const handleSubmit = async () => {
     position: relative;
     cursor: pointer;
     overflow: hidden;
+    @media (max-width: 767px) {
+      width: 100%;
+    }
     .mainImage {
       display: inline-block;
       width: 100%;

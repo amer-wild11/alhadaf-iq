@@ -43,12 +43,20 @@ const filterCustomers = () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media (max-width: 767px) {
+      flex-direction: column;
+      justify-content: start;
+      align-items: start;
+    }
     .title {
       color: $dash-text-color;
       font-weight: bold;
       h1 {
         font-size: 30px;
         text-transform: capitalize;
+        @media (max-width: 767px) {
+          font-size: 25px;
+        }
       }
     }
     .tools {

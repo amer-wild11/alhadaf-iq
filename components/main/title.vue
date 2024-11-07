@@ -1,5 +1,5 @@
 <template>
-  <div class="title container">
+  <div :class="['title container', props.ar ? 'ar' : '']">
     <h1>{{ props.title }}</h1>
   </div>
 </template>
@@ -9,6 +9,10 @@ const props = defineProps({
   title: {
     type: String,
     required: true,
+  },
+  ar: {
+    type: Boolean,
+    required: false,
   },
 });
 </script>

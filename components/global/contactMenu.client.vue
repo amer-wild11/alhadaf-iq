@@ -44,6 +44,14 @@
         placeholder="Your Message"
         v-model="message"
         required
+        v-if="!globalStore.translate"
+      ></textarea>
+      <textarea
+        name="message"
+        placeholder="رسالتك"
+        v-model="message"
+        required
+        v-else
       ></textarea>
       <button>
         <div class="submit">
@@ -183,15 +191,18 @@ onMounted(() => {
   }
   .close {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 10px;
+    right: 10px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
     cursor: pointer;
+    z-index: 1;
+    background-color: white;
+    border: 1px solid lightgray;
     span {
       position: absolute;
-      width: 90%;
+      width: 60%;
       height: 2px;
       top: 50%;
       left: 50%;

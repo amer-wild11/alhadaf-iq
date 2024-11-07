@@ -6,13 +6,14 @@
   >
     <div class="title" ref="title">
       <MainTitle
-        :title="`Find Your Perfect Property Match`"
+        :title="`Our Portfolio`"
         v-if="!globalStore.translate"
         class="en-text"
       ></MainTitle>
       <MainTitle
-        :title="`ابحث عن العقار المناسب لك`"
+        :title="`أعمال الهدف العقارية`"
         class="ar-text"
+        :ar="true"
         v-else
       ></MainTitle>
     </div>
@@ -26,7 +27,7 @@
         >
           <div class="property">
             <div class="image">
-              <img :src="property.images[0].url" alt="" />
+              <img :src="property.images[0].url" alt="" loading="lazy" />
             </div>
             <div class="name">
               <span>{{ property.name }}</span>
@@ -51,6 +52,7 @@ const setDetails = (property) => {
   propertiesStore.details = true;
   const details = {
     name: property.name,
+    translated_name: property.translated_name,
     images: property.images,
     createdAt: property.createdAt,
   };
@@ -66,11 +68,13 @@ onMounted(() => {
     },
   });
 
-  tl.from(title.value, {
-    y: 60,
-    opacity: 0,
-    duration: 1,
-  });
+  if (title.value) {
+    tl.from(title.value, {
+      y: 60,
+      opacity: 0,
+      duration: 1,
+    });
+  }
   tl.from(
     ".propertiesSection .properties .property",
     {
@@ -88,7 +92,7 @@ onMounted(() => {
 .propertiesSection {
   margin-top: 153px;
   margin-bottom: 30px;
-
+  min-height: 100vh;
   .title {
     margin-bottom: 40px;
     @media (max-width: 767px) {

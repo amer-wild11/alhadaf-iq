@@ -10,7 +10,7 @@
           <span class="en-text" v-if="!globalStore.translate"
             >Explore Our Advantages</span
           >
-          <span class="ar-text" v-else>تصفح مزايانا</span>
+          <span class="ar-text" v-else>تصفح مميزاتنا</span>
         </li>
       </ul>
     </header>
@@ -22,12 +22,11 @@
             <p>Stands Out?</p>
           </div>
           <div class="ar-text" v-else>
-            <p>لماذا تتميز</p>
-            <p>شركتنا</p>
+            <p>ماهي مميزات الهدف؟</p>
           </div>
         </h1>
       </div>
-      <div class="contact-button" ref="contactButton">
+      <div class="contact-button contactMenuButton" ref="contactButton">
         <div class="icon">
           <img src="/main/icons/phone.png" alt="" />
         </div>

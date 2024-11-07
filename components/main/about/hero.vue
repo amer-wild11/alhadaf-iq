@@ -2,10 +2,13 @@
   <div class="main" ref="mainSection">
     <div class="container">
       <div class="title">
-        <h1><span>about</span> <span>us</span></h1>
+        <h1 class="en-text" v-if="!globalStore.translate">
+          <span>about</span> <span>us</span>
+        </h1>
+        <h1 class="ar-text" v-else><span>من</span> <span>نحن</span></h1>
       </div>
       <div class="text">
-        <h1>
+        <h1 class="en-text" v-if="!globalStore.translate">
           <span>A</span>
           <span>L</span>
           <span>H</span>
@@ -14,6 +17,9 @@
           <span>A</span>
           <span>F</span>
         </h1>
+        <h1 class="ar-text" v-else>
+          <span>الهدف</span>
+        </h1>
       </div>
     </div>
   </div>
@@ -21,6 +27,7 @@
 
 <script setup>
 const mainSection = ref("");
+const globalStore = useMyGlobalStore();
 onMounted(() => {
   const tl = useGsap.timeline({
     scrollTrigger: {
@@ -63,18 +70,18 @@ onMounted(() => {
     }
   }
   .text {
-    font-size: 270px;
+    font-size: 274px;
     text-align: center;
     font-weight: bold;
-    background-image: url("/main/about/background.png");
-    background-size: contain;
+    background-image: url("/main/about/background.webp");
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
     @media (max-width: 1399px) {
-    font-size: 17dvw;
+      font-size: 17dvw;
     }
   }
 }

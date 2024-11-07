@@ -1,5 +1,12 @@
 <template>
-  <div :class="['dropdown', globalStore.dropdown ? 'show' : '']" ref="dropdown">
+  <div
+    :class="[
+      'dropdown',
+      globalStore.dropdown ? 'show' : '',
+      globalStore.translate ? 'ar' : '',
+    ]"
+    ref="dropdown"
+  >
     <div class="close" @click="close">
       <span class="span1"></span>
       <span class="span2"></span>
@@ -32,7 +39,7 @@ const sections = [
   {
     id: "aboutSection",
     name: "About Us",
-    translated: "عنا",
+    translated: "عن الهدف",
   },
   {
     id: "projectsSection",
@@ -51,14 +58,14 @@ const sections = [
   },
   {
     id: "propertiesSection",
-    name: "properties",
-    translated: "الملكيات",
+    name: "our portfolio",
+    translated: "المعرض",
   },
-  {
-    id: "partnersSection",
-    name: "partners",
-    translated: "الشركاء",
-  },
+  // {
+  //   id: "partnersSection",
+  //   name: "partners",
+  //   translated: "الشركاء",
+  // },
 ];
 
 const close = () => {
@@ -69,24 +76,60 @@ watch(
   () => globalStore.dropdown,
   (newVal) => {
     if (newVal) {
-      useGsap.to(dropdown.value, {
-        rotate: 0,
-        scale: 1,
-        left: 0,
-        duration: 1,
-        ease: "power3.inOut",
-      });
+      const tl = useGsap.timeline();
+      if (dropdown.value) {
+        tl.to(dropdown.value, {
+          display: "unset",
+        });
+      }
+      if (globalStore.translate) {
+        tl.to(
+          dropdown.value,
+          {
+            scale: 1,
+            right: 0,
+            opacity: 1,
+            duration: 0.4,
+          },
+          0.1
+        );
+      } else {
+        tl.to(
+          dropdown.value,
+          {
+            scale: 1,
+            left: 0,
+            opacity: 1,
+            duration: 0.4,
+          },
+          0.1
+        );
+      }
     }
     if (!newVal) {
       const tl = useGsap.timeline();
-      tl.to(dropdown.value, {
-        left: "-115dvh",
-        duration: 1,
-        ease: "power3.inOut",
-      });
-      tl.to(dropdown.value, {
-        rotate: -10,
-      });
+      if (globalStore.translate) {
+        tl.to(dropdown.value, {
+          right: "-10%",
+          duration: 1,
+          opacity: 0,
+          duration: 0.4,
+        });
+      } else {
+        tl.to(dropdown.value, {
+          left: "-10%",
+          duration: 1,
+          opacity: 0,
+          duration: 0.4,
+        });
+      }
+      tl.to(
+        dropdown.value,
+        {
+          display: "none",
+        },
+        0.1
+      );
     }
   }
 );
@@ -118,14 +161,23 @@ onMounted(() => {
 .dropdown {
   position: fixed;
   top: 0;
-  left: -115dvh;
+  left: -10%;
+  display: none;
   width: 50%;
   height: 100dvh;
   background-color: white;
   z-index: 9;
+  opacity: 0;
   transform-origin: center;
-  transform: rotate(-10deg);
   padding: 30px;
+  &.ar {
+    left: unset;
+    right: -10%;
+    .close {
+      left: 20px;
+      right: unset;
+    }
+  }
   @media (max-width: 1024px) {
     width: 80%;
   }

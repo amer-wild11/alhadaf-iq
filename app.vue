@@ -3,7 +3,6 @@
     <NuxtRouteAnnouncer />
     <NuxtLayout>
       <NuxtPage />
-      <InteractiveBall />
       <Dropdown />
       <ContactMenu />
       <Loading />
@@ -17,6 +16,11 @@
       <MainProjectDetails />
       <PropertyDetails />
       <DashboardGlobalAddMethod />
+      <ErrorAlert
+        :title="globalStore.error.title"
+        :desc="globalStore.error.desc"
+        v-if="globalStore.error.show"
+      />
     </NuxtLayout>
   </div>
 </template>

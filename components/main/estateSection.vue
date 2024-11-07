@@ -1,9 +1,9 @@
 <template>
   <div class="estate-outer" ref="estateSection">
     <div class="background" ref="bg">
-      <img src="/main/estate.png" alt="" />
+      <img src="/main/estate.webp" alt="" loading="lazy" />
     </div>
-    <div class="content container">
+    <div :class="['content container', globalStore.translate ? 'ar' : '']">
       <h1 class="title">
         <span class="en-text" v-if="!globalStore.translate">
           <p>Build Your Future</p>
@@ -104,12 +104,11 @@ onMounted(() => {
   flex-direction: column;
   align-items: start;
   gap: 50px;
-
   overflow: hidden;
   position: relative;
   .background {
     width: 100%;
-    height: 100dvh;
+    height: 100vh;
     overflow: hidden;
     img {
       width: 100%;
@@ -125,8 +124,16 @@ onMounted(() => {
     position: absolute;
     top: 95px;
     left: 78px;
+    &.ar {
+      right: 30px;
+      left: 0;
+    }
     @media (max-width: 767px) {
       left: 30px;
+      &.ar {
+        right: 30px;
+        left: 0;
+      }
       h1 {
         font-size: 30px !important;
       }

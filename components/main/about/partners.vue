@@ -4,26 +4,34 @@
       <div class="text">
         <div class="header">
           <div class="button">
-            <span>about us</span>
+            <span class="en-text" v-if="!globalStore.translate">about us</span>
+            <span class="ar-text" v-else>من نحن</span>
           </div>
         </div>
         <div class="content">
-          <h1>
+          <h1 class="en-text" v-if="!globalStore.translate">
             <p>Partners in</p>
             <p>Realizing Your</p>
             <p>Real Estate</p>
             <p>Dreams</p>
           </h1>
+          <h1 class="ar-text" v-else>
+            <p>شركاء</p>
+            <p>بتحقيق</p>
+            <p>احلامكم</p>
+            <p>العقارية</p>
+          </h1>
         </div>
       </div>
       <div class="image">
-        <img src="/main/about/partners.png" alt="" />
+        <img src="/main/about/partners.webp" alt="" loading="lazy" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+const globalStore = useMyGlobalStore();
 const partnersSection = ref("");
 onMounted(() => {
   const tl = useGsap.timeline({

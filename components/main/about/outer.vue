@@ -1,6 +1,6 @@
 <template>
   <div class="outer">
-    <img src="/main/about/bg.png" alt="" />
+    <img src="/main/about/bg.webp" alt="" loading="lazy" />
   </div>
 </template>
 

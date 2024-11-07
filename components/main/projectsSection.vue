@@ -5,27 +5,29 @@
         <h1 class="en-text" v-if="!globalStore.translate">
           <span>explore</span> <span>our</span> <span>portfolio</span>
         </h1>
-        <h1 class="ar-text" v-else><span>استكشف</span> <span>محفظتنا</span></h1>
+        <h1 class="ar-text" v-else>
+          <span>استكشف</span> <span>مشاريعنا</span>
+        </h1>
       </div>
       <NuxtLink to="projects">
         <div class="button" ref="button">
           <span class="en-text" v-if="!globalStore.translate"
             >all projects</span
           >
-          <span class="ar-text" v-else>كل المشاريع</span>
+          <span class="ar-text" v-else>جميع المشاريع</span>
         </div>
       </NuxtLink>
     </div>
-    <div class="projects">
+    <div class="projects" v-if="true">
+
       <div
         class="project"
         v-for="(project, i) in projectsStore.projects.slice(0, 6)"
         :key="i"
-        v-if="projectsStore.projects.length > 0"
         @click="setDetails(project)"
       >
         <div class="background">
-          <img :src="project.images[0].url" alt="" />
+          <img :src="project.images[0].url" alt="" loading="lazy" />
         </div>
         <div class="content">
           <div class="link">
@@ -55,14 +57,19 @@ const setDetails = (project) => {
   const details = {
     name: project.name,
     location: project.location,
-    images: project.images,
     desc: project.desc,
+    images: project.images,
+    translated_name: project.translated_name,
+    translated_location: project.translated_location,
+    translated_desc: project.translated_desc,
+    images: project.images,
     createdAt: project.createdAt,
   };
   projectsStore.projectDetails = details;
 };
 
-onMounted(() => {
+onMounted(async () => {
+  await nextTick();
   const tl = useGsap.timeline({
     scrollTrigger: {
       trigger: ".projectsSection",
@@ -70,6 +77,7 @@ onMounted(() => {
       end: "top top",
     },
   });
+
   tl.from(".projectsSection .header .title h1 span", {
     y: 60,
     opacity: 0,
@@ -98,7 +106,7 @@ onMounted(() => {
 <style scoped lang="scss">
 .projectsSection {
   margin: 50px auto;
-  min-height: 100dvh;
+
   .header {
     display: flex;
     align-items: center;
@@ -138,8 +146,8 @@ onMounted(() => {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     gap: 30px;
-    @media (max-width: 399px) {
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    @media (max-width: 844px) {
+      grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
     }
     .project {
       border-radius: 30px;
@@ -147,6 +155,7 @@ onMounted(() => {
       position: relative;
       overflow: hidden;
       cursor: pointer;
+      background-color: blue;
       &::before {
         position: absolute;
         content: "";
@@ -223,6 +232,10 @@ onMounted(() => {
           }
         }
       }
+    }
+    .clone {
+      background-color: rgba(219, 219, 219, 0.411);
+      border: 1px solid rgba(192, 190, 190, 0.397);
     }
   }
 }

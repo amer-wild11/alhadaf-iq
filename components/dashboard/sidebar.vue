@@ -42,21 +42,29 @@ const links = [
   },
 ];
 </script>
-
 <style scoped lang="scss">
 aside {
   position: fixed;
   top: 0;
   left: 0;
   width: $sidebar-width;
-  height: 100dvh;
+  height: 100vh;
   padding: 20px;
   border-right: 1px solid $light-dash;
   color: $dash-text-color;
+  @media (max-width: 767px) {
+    width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .logo {
     width: 150px;
     margin: auto;
     margin-bottom: 30px;
+    @media (max-width: 767px) {
+      display: none;
+    }
     img {
       filter: grayscale(100%) brightness(0%);
     }
@@ -76,6 +84,15 @@ aside {
         cursor: pointer;
         position: relative;
         transition: 0.2s ease-out;
+        @media (max-width: 767px) {
+          padding: 0;
+          width: 40px;
+          height: 40px;
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
         &.router-link-active {
           color: white;
           background-color: $light-main-color;
@@ -102,6 +119,9 @@ aside {
         .name {
           text-transform: capitalize;
           font-size: 16px;
+          @media (max-width: 767px) {
+            display: none;
+          }
         }
       }
     }

@@ -11,6 +11,7 @@ export default defineNuxtPlugin(() => {
 
     function raf(time: number) {
       lenis.raf(time);
+
       requestAnimationFrame(raf);
     }
 

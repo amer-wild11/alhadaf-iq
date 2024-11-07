@@ -3,7 +3,7 @@
     <div class="sides">
       <div class="hero-text">
         <div class="background">
-          <img src="/main/hero-image.png" alt="" />
+          <img src="/main/hero-image.webp" alt="" />
         </div>
         <div class="header container">
           <div class="logo" ref="logo">
@@ -19,9 +19,6 @@
             >
               <ul class="selector">
                 <li class="selected" @click="showSelector">
-                  <div class="icon">
-                    <Icon :name="selectedLanguage.icon" />
-                  </div>
                   <div class="langName">
                     <span v-if="!globalStore.translate">{{
                       selectedLanguage.name
@@ -38,9 +35,6 @@
                     :key="i"
                     @click="selectLang(language)"
                   >
-                    <div class="icon">
-                      <Icon :name="language.icon" />
-                    </div>
                     <div class="name">
                       <span v-if="!globalStore.translate">{{
                         language.name
@@ -90,7 +84,11 @@
           </h1>
         </div>
         <div class="footer hero-container">
-          <div class="contact" ref="contactButton" @click="openContactMenu">
+          <div
+            class="contact contactMenuButton"
+            ref="contactButton"
+            @click="openContactMenu"
+          >
             <div class="icon flex items-center justify-center">
               <Icon name="material-symbols:phone-in-talk-sharp" />
             </div>
@@ -109,7 +107,7 @@
               <p>Our Projects</p>
             </div>
             <div class="text ar-text" v-else>
-              <p>تصفح كل</p>
+              <p>تصفح جميع</p>
               <p>مشاريعنا</p>
             </div>
             <div class="img" ref="explorerImage">
@@ -124,7 +122,7 @@
       <div class="hero-image">
         <div class="background">
           <div class="white-bg"></div>
-          <img src="/main/hero-image.png" alt="" ref="rightImage" />
+          <img src="/main/hero-image.webp" alt="" ref="rightImage" />
         </div>
         <div class="content">
           <div class="header">
@@ -146,12 +144,12 @@
             </div>
           </div>
           <div class="footer">
-            <a href="http://Alhadaf.com.iq/profile/profile.pdf">
+            <a href="https://alhadaf.com.iq/profile.pdf" target="_blank">
               <div class="catalog-downloader" ref="catalogDownloader">
                 <p class="en-text" v-if="!globalStore.translate">
                   catalog download
                 </p>
-                <p class="ar-text" v-else>تحميل الكاتالوج</p>
+                <p class="ar-text" v-else>ملف الشركة</p>
                 <div class="icon">
                   <img src="/main/icons/download.png" alt="" />
                 </div>
@@ -178,7 +176,7 @@ const globalStore = useMyGlobalStore();
 const languages = [
   {
     icon: "flag:sa-4x3",
-    name: "Arabic",
+    name: "AR",
     translatedName: "العربية",
     selected: false,
     language: "ar",
@@ -186,7 +184,7 @@ const languages = [
   },
   {
     icon: "flag:us-4x3",
-    name: "English",
+    name: "EN",
     selected: true,
     language: "en",
     translatedName: "الأنجليزية",
@@ -225,14 +223,29 @@ const openContactMenu = () => {
 const translator = ref("");
 
 const scroll = (id) => {
-  useGsap.to(window, {
-    scrollTo: `#${id}`,
-    duration: 1, // تقليل المدة
-    ease: "power2.inOut", // يمكنك تجربة نوع أسهل لزيادة السلاسة
-  });
+  if (window) {
+    useGsap.to(window, {
+      scrollTo: `#${id}`,
+      duration: 1, // تقليل المدة
+      ease: "power2.inOut", // يمكنك تجربة نوع أسهل لزيادة السلاسة
+    });
+  }
 };
 
-onMounted(() => {
+const router = useRouter();
+
+router.afterEach((to, from) => {
+  if (from.fullPath == "/projects") {
+    useGsap.to(window, {
+      scrollTo: `#projectsSection`,
+      duration: 1, // تقليل المدة
+      ease: "power2.inOut", // يمكنك تجربة نوع أسهل لزيادة السلاسة
+    });
+  }
+});
+
+onMounted(async () => {
+  await nextTick();
   const tl = useGsap.timeline();
   document.addEventListener("click", (e) => {
     if (translator.value && !translator.value.contains(e.target)) {
@@ -269,26 +282,30 @@ onMounted(() => {
     0.4
   );
   // catalog downloader
-  tl.from(
-    catalogDownloader.value,
-    {
-      scale: 0,
-      opacity: 0,
-      duration: 1,
-    },
-    0.6
-  );
+  if (catalogDownloader.value) {
+    tl.from(
+      catalogDownloader.value,
+      {
+        scale: 0,
+        opacity: 0,
+        duration: 1,
+      },
+      0.6
+    );
+  }
   // the title on the left
-  tl.from(
-    heroTitle.value,
-    {
-      y: -30,
-      opacity: 0,
-      duration: 1,
-      ease: "power3.in-out",
-    },
-    0.4
-  );
+  if (heroTitle.value) {
+    tl.from(
+      heroTitle.value,
+      {
+        y: -30,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.in-out",
+      },
+      0.4
+    );
+  }
   // the subtitle on the left
   tl.from(
     "#heroSubTitle p",
@@ -335,39 +352,46 @@ onMounted(() => {
     0.8
   );
   // explorer image
-  tl.from(
-    explorerImage.value,
-    {
-      scale: 0,
-      opacity: 0,
-      duration: 1,
-    },
-    0.8
-  );
+  if (explorerImage.value) {
+    tl.from(
+      explorerImage.value,
+      {
+        scale: 0,
+        opacity: 0,
+        duration: 1,
+      },
+      0.8
+    );
+  }
   // contact button
-  tl.from(
-    contactButton.value,
-    {
-      width: 40,
-      duration: 1,
-    },
-    0.9
-  );
+  if (contactButton.value) {
+    tl.from(
+      contactButton.value,
+      {
+        width: 40,
+        duration: 1,
+      },
+      0.9
+    );
+  }
   // the text in the contact button
-  tl.from(
-    contactButtonText.value,
-    {
-      display: "none",
-      opacity: 0,
-      duration: 1,
-    },
-    2
-  );
+  if (contactButtonText.value) {
+    tl.from(
+      contactButtonText.value,
+      {
+        display: "none",
+        opacity: 0,
+        duration: 1,
+      },
+      2
+    );
+  }
 });
 </script>
 
 <style scoped lang="scss">
 .hero {
+  height: fit-content;
   .sides {
     display: grid;
     grid-template-columns: calc(45% - 10px) calc(45% - 10px);
@@ -377,19 +401,28 @@ onMounted(() => {
       grid-template-columns: 100%;
     }
     .hero-container {
-      width: 90%;
+      width: 98%;
       margin: auto;
+      padding: 0 10px;
     }
     .hero-text {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      height: calc(100dvh - 10px);
+      height: 90vh;
       max-height: 830px;
       .logo {
         position: relative;
         z-index: 99;
-        width: 140px;
+        width: 160px;
+        @media (max-width: 767px) {
+          width: 140px;
+          transform: translateY(-4px) !important;
+        }
+        @media (max-width: 400px) {
+          width: 130px;
+          transform: translateY(-4px) !important;
+        }
       }
       .background {
         width: 100%;
@@ -445,6 +478,10 @@ onMounted(() => {
             cursor: pointer;
             color: $main-color;
             font-size: 24px;
+            @media (max-width: 767px) {
+              width: 36px;
+              height: 36px;
+            }
           }
           .translate {
             width: unset;
@@ -474,8 +511,10 @@ onMounted(() => {
                 justify-content: space-between;
                 gap: 10px;
                 user-select: none;
-                width: 100px;
                 padding: 5px 10px;
+                @media (max-width: 767px) {
+                  padding: 3px 7px;
+                }
                 .iconify {
                   transform: translateY(2.5px);
                 }
@@ -495,7 +534,6 @@ onMounted(() => {
                   transform: translateX(-50%);
                 }
                 li {
-                  width: 100px;
                   padding: 5px 10px;
                   display: flex;
                   align-items: center;

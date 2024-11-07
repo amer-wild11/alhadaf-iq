@@ -105,6 +105,7 @@ onMounted(() => {
 <style scoped lang="scss">
 .partners-outer {
   margin-bottom: 230px;
+  display: none;
   .title {
     margin: 160px auto;
   }

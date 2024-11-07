@@ -88,12 +88,20 @@ const setDetails = (project) => {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media (max-width: 767px) {
+      flex-direction: column;
+      justify-content: start;
+      align-items: start;
+    }
     .title {
       color: $dash-text-color;
       font-weight: bold;
       h1 {
         font-size: 30px;
         text-transform: capitalize;
+        @media (max-width: 767px) {
+          font-size: 25px;
+        }
       }
     }
     .tools {
@@ -119,6 +127,9 @@ const setDetails = (project) => {
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 20px;
     row-gap: 10px;
+    @media (max-width: 767px) {
+      grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+    }
     .project {
       cursor: pointer;
       border-radius: 20px;

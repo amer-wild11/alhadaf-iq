@@ -11,7 +11,7 @@
     />
     <input
       type="props.type"
-      :placeholder="props.placeholder"
+      :placeholder="props.translatedPlaceholder"
       :class="[props.error ? 'error' : '']"
       :required="props.required"
       v-model="inputValue"
@@ -64,6 +64,7 @@ const props = defineProps({
     text-transform: capitalize;
   }
   input {
+    width: 100%;
     border: 1px solid lightgray;
     padding: 5px 10px;
     border-radius: 5px;

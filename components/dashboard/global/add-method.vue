@@ -18,24 +18,48 @@
     <form @submit.prevent="handleSubmit">
       <h1>Add a new project</h1>
 
-      <CustomInput
-        placeholder="Project Name"
-        type="text"
-        translated-placeholder="أسم المشروع"
-        :error="isError.name"
-        @data-sent="handleName"
-      />
-      <CustomInput
-        placeholder="Project Location"
-        type="text"
-        translated-placeholder="أسم المشروع"
-        :error="isError.location"
-        @data-sent="handleLocation"
-      />
-      <textarea
-        placeholder="description"
-        v-model="formData.description"
-      ></textarea>
+      <div class="group">
+        <CustomInput
+          placeholder="Project Name"
+          type="text"
+          translated-placeholder="أسم المشروع"
+          :error="isError.name"
+          @data-sent="handleName"
+        />
+        <CustomInput
+          placeholder="Translated project Name"
+          type="text"
+          translated-placeholder="أسم المشروع"
+          :error="isError.name"
+          @data-sent="translatedName"
+        />
+      </div>
+      <div class="group">
+        <CustomInput
+          placeholder="Project Location"
+          type="text"
+          translated-placeholder="أسم المشروع"
+          :error="isError.location"
+          @data-sent="handleLocation"
+        />
+        <CustomInput
+          placeholder="Translated project Location"
+          type="text"
+          translated-placeholder="أسم المشروع"
+          :error="isError.location"
+          @data-sent="translatedLocation"
+        />
+      </div>
+      <div class="group">
+        <textarea
+          placeholder="description"
+          v-model="formData.description"
+        ></textarea>
+        <textarea
+          placeholder="Translated description"
+          v-model="formData.translated_description"
+        ></textarea>
+      </div>
       <button>
         <div class="submit">{{ buttonContent }}</div>
       </button>
@@ -63,8 +87,11 @@ const isError = ref({
 
 const formData = ref({
   name: "",
+  translated_name: "",
   location: "",
+  translated_location: "",
   description: "",
+  translated_description: "",
 });
 
 const close = () => {
@@ -79,9 +106,15 @@ const close = () => {
 const handleName = (data) => {
   formData.value.name = data;
 };
+const translatedName = (data) => {
+  formData.value.translated_name = data;
+};
 
 const handleLocation = (data) => {
   formData.value.location = data;
+};
+const translatedLocation = (data) => {
+  formData.value.translated_location = data;
 };
 
 const handleFileChange = (event) => {
@@ -118,8 +151,6 @@ const handleSubmit = async () => {
     description: false,
   };
 
-  console.log(formData.value);
-
   // التحقق من القيم المدخلة
   if (formData.value.name == "") {
     isError.value.name = true;
@@ -143,6 +174,9 @@ const handleSubmit = async () => {
     data.append("name", formData.value.name);
     data.append("location", formData.value.location);
     data.append("desc", formData.value.description);
+    data.append("translated_name", formData.value.translated_name);
+    data.append("translated_location", formData.value.translated_location);
+    data.append("translated_desc", formData.value.translated_description);
 
     Array.from(imagesFiles.value).forEach((file, index) => {
       data.append(`image[${index}]`, file);
@@ -185,8 +219,11 @@ const handleSubmit = async () => {
   gap: 10px;
   z-index: 99;
   transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 767px;
+  width: 96%;
+  max-width: 900px;
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
   .close {
     position: absolute;
     top: 5px;
@@ -209,6 +246,9 @@ const handleSubmit = async () => {
     position: relative;
     cursor: pointer;
     overflow: hidden;
+    @media (max-width: 767px) {
+      width: 100%;
+    }
     .mainImage {
       display: inline-block;
       width: 100%;
@@ -250,6 +290,16 @@ const handleSubmit = async () => {
     flex-direction: column;
     gap: 10px;
     flex: 1;
+    .group {
+      display: flex;
+      gap: 10px;
+      .input {
+        flex-grow: 1;
+      }
+      textarea {
+        flex-grow: 1;
+      }
+    }
     textarea {
       border: 1px solid lightgray;
       padding: 5px 10px;

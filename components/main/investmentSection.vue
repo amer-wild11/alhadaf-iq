@@ -10,17 +10,15 @@
         class="en-text"
         v-if="!globalStore.translate"
       />
-      <MainTitle title="الطريق إلى الاستثمار الذكي" class="ar-text" v-else />
+      <MainTitle title="طريق الهدف العقارية" class="ar-text" v-else />
     </div>
     <div class="investments container">
       <div :class="['mainText', globalStore.translate ? 'ar' : '']">
         <div class="en-text" v-if="!globalStore.translate">
-          <p>Smart</p>
-          <p>Ownership</p>
+          <p>ALHADAF REAL ESTATE</p>
         </div>
         <div class="ar-text" v-else>
-          <p>ملكية</p>
-          <p>ذكية</p>
+          <p>الهدف للعقارات</p>
         </div>
       </div>
       <div
@@ -37,167 +35,129 @@
       </div>
     </div>
     <div class="catalog-downloader">
-      <div class="button" ref="catalogButton">
-        <div class="icon">
-          <img src="/main/icons/download.png" alt="" />
+      <a href="https://alhadaf.com.iq/profile.pdf" target="_blank">
+        <div class="button" ref="catalogButton">
+          <div class="icon">
+            <img src="/main/icons/download.png" alt="" />
+          </div>
+          <span ref="catalogContent">
+            <p class="en-text" v-if="!globalStore.translate">
+              Catalog Download
+            </p>
+            <p class="ar-text" v-else>ملف الشركة</p>
+          </span>
         </div>
-        <span ref="catalogContent">
-          <p class="en-text" v-if="!globalStore.translate">Catalog Download</p>
-          <p class="ar-text" v-else>تحميل الكاتالوج</p>
-        </span>
-      </div>
+      </a>
     </div>
   </div>
 </template>
 
 <script setup>
-const title = ref("");
-const catalogButton = ref("");
-const catalogContent = ref("");
+import { ref, onMounted, nextTick } from "vue";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+// المراجع
+const investmentContainer = ref(null);
+const title = ref(null);
+const catalogButton = ref(null);
+const catalogContent = ref(null);
 const globalStore = useMyGlobalStore();
+const projectsStore = useMyProjectsStore();
 
-const investmentContainer = ref("");
-
+// البيانات
 const investments = [
-  {
-    content: `10% Initial
-Investment`,
-    translated: `10% استثمار أولي`,
-  },
-  {
-    content: `Flexible Payment
-Plans
-(up to 5 years)`,
-    translated: `خطط سداد مرنة
-(تصل إلى 5 سنوات)`,
-  },
-  {
-    content: `Projected Rental
-Income ~ 15%`,
-    translated: `الدخل الإيجاري
-المتوقع ~ 15%`,
-  },
+  { content: "Successful\ninvestment", translated: "استثمار\nناجح" },
+  { content: "Diversified\nMarketing", translated: "التسويق\nالمتنوع" },
+  { content: "Smart\nDevelopment", translated: "التطوير\nالذكي" },
 ];
 
-onMounted(() => {
+// وظيفة التحديث
+watch(
+  () => projectsStore.projects.length,
+  () => {
+    ScrollTrigger.refresh();
+  }
+);
+
+// إعداد الرسوم المتحركة باستخدام GSAP
+onMounted(async () => {
+  await nextTick();
+
+  // رسوم متحركة للعنوان
+  useGsap.from(title.value, {
+    y: 50,
+    opacity: 0,
+    duration: 1,
+    scrollTrigger: {
+      trigger: investmentContainer.value,
+    },
+  });
+
+  // إعداد الحركات بناءً على استعلام الشاشة
   if (window.innerWidth > 767) {
-    const tl = useGsap.timeline({
+    const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: investmentContainer.value,
+        trigger: "#investmentsSection",
         scrub: 1,
         pin: true,
-        end: "+=3000",
-      },
-    });
-    tl.from(title.value, {
-      y: 50,
-      opacity: 0,
-      duration: 1,
-      scrollTrigger: {
-        trigger: investmentContainer.value,
-        scrub: 1,
+        end: "+=2500",
       },
     });
     tl.to(
       ".circle0",
-      {
-        left: "44%",
-        top: "50%",
-        duration: 1,
-        ease: "power1.in-out",
-      },
+      { left: "44%", top: "50%", duration: 1, ease: "power1.in-out" },
       0
     );
     tl.to(
       ".circle1",
-      {
-        left: " 50%",
-        top: "30%",
-        duration: 1,
-        ease: "power1.in-out",
-      },
+      { left: "50%", top: "30%", duration: 1, ease: "power1.in-out" },
       0
     );
     tl.to(
       ".circle2",
-      {
-        left: "56%",
-        top: "50%",
-        duration: 1,
-        ease: "power1.in-out",
-      },
+      { left: "56%", top: "50%", duration: 1, ease: "power1.in-out" },
       0
     );
-    tl.to(
-      ".circle0content",
-      {
-        opacity: 0,
-        duration: 0.4,
-      },
-      1
-    );
-    tl.to(
-      ".circle1content",
-      {
-        opacity: 0,
-        duration: 0.4,
-      },
-      1
-    );
-    tl.to(
-      ".circle2content",
-      {
-        opacity: 0,
-        duration: 0.4,
-      },
-      1
-    );
+
+    tl.to(".circle0content", { opacity: 0, duration: 0.4 }, 1);
+    tl.to(".circle1content", { opacity: 0, duration: 0.4 }, 1);
+    tl.to(".circle2content", { opacity: 0, duration: 0.4 }, 1);
+
     tl.from(".investments-outer .investments .mainText", {
       opacity: 0,
       y: 30,
       duration: 1,
     });
+
     tl.to([".circle0", ".circle1", ".circle2"], {
       top: "50%",
       left: "50%",
       duration: 0.5,
     });
-    tl.to(catalogButton.value, {
-      width: 200,
-      borderRadius: "10px",
-    });
-    tl.from(catalogContent.value, {
-      display: "none",
-      opacity: 0,
-      duration: 1,
-    });
+    tl.to(catalogButton.value, { width: 200, borderRadius: "10px" });
+    tl.from(catalogContent.value, { display: "none", opacity: 0, duration: 1 });
   } else {
-    const tl = useGsap.timeline({
+    const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: investmentContainer.value,
-        scrub: 1,
+        trigger: "#investmentsSection",
       },
     });
-    tl.to(catalogButton.value, {
-      width: 200,
-      borderRadius: "10px",
-    });
-    tl.from(catalogContent.value, {
-      display: "none",
-      opacity: 0,
-      duration: 1,
-    });
+    tl.to(catalogButton.value, { width: 200, borderRadius: "10px" });
+    tl.from(catalogContent.value, { display: "none", opacity: 0, duration: 1 });
   }
 });
 </script>
 
 <style scoped lang="scss">
 .investments-outer {
-  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 100px 0;
+  min-height: 100dvh;
   .investments {
     position: relative;
     display: flex;
@@ -222,7 +182,9 @@ onMounted(() => {
         text-align: center;
         display: unset;
         &.ar {
-          left: 51.5%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 25px;
         }
       }
     }

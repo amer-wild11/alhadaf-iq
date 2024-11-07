@@ -66,6 +66,7 @@ const setDetails = (property) => {
   propertiesStore.details = true;
   const details = {
     name: property.name,
+    translated_name: property.translated_name,
     images: property.images,
     createdAt: property.createdAt,
   };
@@ -81,12 +82,20 @@ const setDetails = (property) => {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media (max-width: 767px) {
+      flex-direction: column;
+      justify-content: start;
+      align-items: start;
+    }
     .title {
       color: $dash-text-color;
       font-weight: bold;
       h1 {
         font-size: 30px;
         text-transform: capitalize;
+        @media (max-width: 767px) {
+          font-size: 25px;
+        }
       }
     }
     .tools {
@@ -163,6 +172,11 @@ const setDetails = (property) => {
             align-items: center;
             justify-content: center;
             font-size: 20px;
+            transition: 0.2s;
+            &:hover {
+              background-color: rgb(238, 37, 37);
+              color: white;
+            }
           }
         }
       }

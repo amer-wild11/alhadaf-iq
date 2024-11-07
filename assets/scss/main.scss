@@ -1,9 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap");
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   font-family: "Inter", sans-serif;
+  &.ar-text,
+  &.ar-text * {
+    font-family: "Cairo", sans-serif;
+  }
   -webkit-tap-highlight-color: transparent;
   outline: none;
   &::-webkit-scrollbar {
@@ -17,12 +21,16 @@
 }
 
 body {
-  background-color: #e5e5e5;
-  overflow-x: hidden;
+  background-color: #e5e5e5 !important;
+}
+
+.contactMenuButton {
+  user-select: none !important;
 }
 
 html,
 body {
+  overflow-x: hidden;
   will-change: scroll-position;
 }
 
@@ -34,7 +42,10 @@ section {
   padding-left: calc($sidebar-width + 4px);
   background-color: $dash-bg;
   color: $dash-text-color;
-  min-height: 100dvh;
+  min-height: 100vh;
+  @media (max-width: 767px) {
+    padding-left: calc(70px + 4px);
+  }
 }
 
 input {
