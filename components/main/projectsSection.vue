@@ -155,7 +155,7 @@ onMounted(async () => {
       position: relative;
       overflow: hidden;
       cursor: pointer;
-      background-color: blue;
+      background-color: rgb(231, 231, 231);
       &::before {
         position: absolute;
         content: "";

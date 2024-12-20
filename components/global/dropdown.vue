@@ -1,12 +1,9 @@
 <template>
-  <div
-    :class="[
-      'dropdown',
-      globalStore.dropdown ? 'show' : '',
-      globalStore.translate ? 'ar' : '',
-    ]"
-    ref="dropdown"
-  >
+  <div :class="[
+    'dropdown',
+    globalStore.dropdown ? 'show' : '',
+    globalStore.translate ? 'ar' : '',
+  ]" ref="dropdown">
     <div class="close" @click="close">
       <span class="span1"></span>
       <span class="span2"></span>
@@ -17,12 +14,31 @@
         <span class="ar-text" v-else>الأقسام</span>
       </div>
       <li @click="scroll(section.id)" v-for="(section, i) in sections" :key="i">
-        <span class="en-text" v-if="!globalStore.translate">{{
-          section.name
-        }}</span>
-        <span class="ar-text" v-else>{{ section.translated }}</span>
+        <div class="icon">
+          <Icon :name="section.icon" />
+        </div>
+        <div class="value">
+          <span class="en-text" v-if="!globalStore.translate">{{
+            section.name
+            }}</span>
+          <span class="ar-text" v-else>{{ section.translated }}</span>
+        </div>
       </li>
     </ul>
+    <div class="socialLinks">
+      <div class="title">
+        <span>Social media: </span>
+      </div>
+      <div class="links">
+        <div class="link" v-for="link in socialLinks" :key="link.name">
+          <a :href="link.link" target="_blank">
+            <div class="icon">
+              <Icon :name="link.icon" />
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -35,31 +51,37 @@ const sections = [
     id: "heroSection",
     name: "Home",
     translated: "الرئيسية",
+    icon: 'material-symbols:house'
   },
   {
     id: "aboutSection",
     name: "About Us",
     translated: "عن الهدف",
+    icon: 'material-symbols:user-attributes-outline'
   },
   {
     id: "projectsSection",
     name: "Our projects",
     translated: "مشاريعنا",
+    icon: 'si:projects-alt-duotone'
   },
   {
     id: "investmentsSection",
     name: "smart investment",
     translated: "استثمار ذكي",
+    icon: 'simple-icons:bitcoin'
   },
   {
     id: "advantagsSection",
     name: "advantages",
     translated: "المزايا",
+    icon: 'streamline:interface-user-check-actions-close-checkmark-check-geometric-human-person-single-success-up-user'
   },
   {
     id: "propertiesSection",
     name: "our portfolio",
     translated: "المعرض",
+    icon: 'streamline:interface-file-clipboard-text-edition-form-task-checklist-edit-clipboard'
   },
   // {
   //   id: "partnersSection",
@@ -67,6 +89,29 @@ const sections = [
   //   translated: "الشركاء",
   // },
 ];
+
+const socialLinks = [
+  {
+    icon: 'ic:baseline-facebook',
+    link: 'https://www.facebook.com/alhadaf.estate/',
+    name: 'facebook'
+  },
+  {
+    icon: 'uil:instagram-alt',
+    link: 'https://www.instagram.com/alhadaf.estate/',
+    name: 'instagram'
+  },
+  {
+    icon: 'uil:linkedin',
+    link: 'https://www.linkedin.com/company/alhadafestate/',
+    name: 'linkedin'
+  },
+  {
+    icon: 'uil:youtube',
+    link: 'https://www.youtube.com/@Alhadaf.estate',
+    name: 'youtube'
+  },
+]
 
 const close = () => {
   globalStore.dropdown = false;
@@ -170,22 +215,27 @@ onMounted(() => {
   opacity: 0;
   transform-origin: center;
   padding: 30px;
+
   &.ar {
     left: unset;
     right: -10%;
+
     .close {
       left: 20px;
       right: unset;
     }
   }
+
   @media (max-width: 1024px) {
-    width: 80%;
+    width: 96%;
   }
+
   @media (max-width: 374px) {
-    width: 90%;
+    width: 98%;
   }
-  @media (max-width: 374px) {
-  }
+
+  @media (max-width: 374px) {}
+
   .close {
     position: absolute;
     top: 20px;
@@ -194,6 +244,7 @@ onMounted(() => {
     height: 30px;
     border-radius: 50%;
     cursor: pointer;
+
     span {
       position: absolute;
       width: 90%;
@@ -203,34 +254,72 @@ onMounted(() => {
       transform: translate(-50%, -50%);
       background-color: $main-color;
     }
+
     .span1 {
       transition: 1s;
       transform: translate(-50%, -50%) rotate(45deg);
       transform-origin: center;
     }
+
     .span2 {
       transition: 1s;
       transform: translate(-50%, -50%) rotate(-45deg);
       transform-origin: center;
     }
   }
+
   ul {
     display: flex;
     flex-direction: column;
     gap: 10px;
+
     .title {
       font-size: 20px;
       text-transform: capitalize;
       color: rgb(75, 75, 75);
       margin-bottom: 20px;
     }
+
     li {
-      font-size: 40px;
+      font-size: 35px;
       cursor: pointer;
       user-select: none;
       text-transform: capitalize;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .icon {
+        transform: translateY(7%);
+        font-size: 30px;
+        color: rgba(0, 0, 0, 0.733);
+      }
+
       @media (max-width: 374px) {
         font-size: 25px;
+      }
+    }
+  }
+
+  .socialLinks {
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    @media (max-width: 767px) {
+      flex-direction: column;
+      align-items: start;
+    }
+
+    .links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+
+      .link {
+        transform: translateY(15%);
+        font-size: 40px;
       }
     }
   }

@@ -3,22 +3,21 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   app: {
     head: {
-      title:
-        "Al Hadaf for Real Estate Development, Investment & Marketing – Official Website",
+      title: "Alhadaf Real Estate | شركة الهدف للتطوير والاستثمار والتسويق العقاري",
       meta: [
         {
           name: "description",
           content:
-            "Al Hadaf specializes in offering comprehensive real estate solutions, from developing modern real estate projects and investing in residential and commercial properties to providing integrated real estate marketing services. Al Hadaf offers a range of high-specification properties, including diverse spaces that meet the needs of individuals and investors in fully integrated residential and commercial environments.",
+            "شركة الهدف للتطوير والاستثمار والتسويق العقاري هي إحدى الشركات الرائدة في العراق المتخصصة في تقديم خدمات شاملة ومتكاملة في مجال العقارات. تشمل خدماتنا التطوير العقاري للمشاريع السكنية والتجارية الحديثة، الاستثمار العقاري في أفضل الفرص المتاحة، والتسويق العقاري الذي يضمن وصول العقارات إلى العملاء المناسبين بأعلى كفاءة. نحن نوفر عقارات مميزة تلبي احتياجات الأفراد والمستثمرين في بيئات متكاملة تجمع بين الراحة والفخامة.",
         },
         {
           name: "keywords",
           content:
-            "Al Hadaf Real Estate Development, Al Hadaf, real estate development, real estate investment, real estate marketing, residential properties, commercial properties, Iraq, Baghdad, real estate projects, real estate investment in Iraq, real estate marketing",
+            "شركة الهدف للتطوير العقاري، شركة تطوير العقارات في العراق، الهدف، تطوير عقاري في العراق، استثمار عقاري، تسويق عقاري في العراق، عقارات سكنية، عقارات تجارية، مشاريع عقارية، فرص استثمار عقاري في العراق، تسويق عقاري احترافي، بغداد، العراق",
         },
         {
           name: "author",
-          content: "Malamih Creative L.L.C",
+          content: "شركة ملامح الإبداعية ذ.م.م",
         },
         {
           name: "robots",
@@ -37,20 +36,27 @@ export default defineNuxtConfig({
           innerHTML: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "RealEstateAgent",
-            name: "Al Hadaf Real Estate Development, Investment & Marketing",
+            name: "شركة الهدف للتطوير والاستثمار والتسويق العقاري",
             description:
-              "Specialized in real estate project development, investment, and marketing of residential and commercial properties",
+              "شركة متخصصة في التطوير العقاري، الاستثمار العقاري، والتسويق العقاري الاحترافي للمشاريع السكنية والتجارية في العراق",
             address: {
               "@type": "PostalAddress",
-              addressLocality: "Baghdad",
-              addressCountry: "Iraq",
+              addressLocality: "بغداد",
+              addressCountry: "العراق",
             },
-            areaServed: "Iraq",
+            areaServed: "العراق",
             serviceType: [
-              "Real Estate Development",
-              "Real Estate Investment",
-              "Real Estate Marketing",
+              "التطوير العقاري",
+              "الاستثمار العقاري",
+              "التسويق العقاري",
             ],
+            additionalType: "https://schema.org/RealEstateDeveloper",
+            offers: {
+              "@type": "Offer",
+              name: "خدمات التطوير العقاري",
+              description:
+                "نقوم بتطوير مشاريع عقارية متكاملة تلبي احتياجات السوق العراقي الحديث",
+            },
           }),
           "data-hid": "ld-json",
         },

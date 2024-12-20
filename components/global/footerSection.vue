@@ -11,18 +11,12 @@
         <p class="slogan ar-text" v-else>بناء أحلامك في مجال العقارات</p>
       </div>
       <ul class="navigation">
-        <span class="title en-text" v-if="!globalStore.translate"
-          >Quick Navigation</span
-        >
+        <span class="title en-text" v-if="!globalStore.translate">Quick Navigation</span>
         <span class="title ar-text" v-else>تنقل سريع</span>
-        <li
-          @click="scroll(section.id)"
-          v-for="(section, i) in sections"
-          :key="i"
-        >
+        <li @click="scroll(section.id)" v-for="(section, i) in sections" :key="i">
           <span class="en-text" v-if="!globalStore.translate">{{
             section.name
-          }}</span>
+            }}</span>
           <span class="ar-text" v-else>{{ section.translated }}</span>
         </li>
       </ul>
@@ -41,14 +35,21 @@
           <div class="icon">
             <img src="/main/icons/phone.png" alt="" />
           </div>
-          <span class="en-text" v-if="!globalStore.translate"
-            >Contact Us Now</span
-          >
+          <span class="en-text" v-if="!globalStore.translate">Contact Us Now</span>
           <span class="ar-text" v-else>تواصل معنا الأن</span>
         </div>
         <div class="email-web">
           <span class="email">info@alhadaf.com.iq</span>
           <span class="web">alhadaf.com.iq</span>
+        </div>
+        <div class="socialLinks">
+          <div class="link" v-for="link in socialLinks" :key="link.name">
+            <a :href="link.link" target="_blank">
+              <div class="icon">
+                <Icon :name="link.icon" />
+              </div>
+            </a>
+          </div>
         </div>
       </div>
 
@@ -59,13 +60,11 @@
         <pre class="location en-text" v-if="!globalStore.translate">
 Iraq, Baghdad
 Turkey, Istanbul
-</pre
-        >
+</pre>
         <pre class="location ar-text" v-else>
 العراق، بغداد
 تركيا، اسطنبول
-</pre
-        >
+</pre>
       </div>
     </div>
   </footer>
@@ -116,6 +115,29 @@ const sections = [
   },
 ];
 
+const socialLinks = [
+  {
+    icon: 'ic:baseline-facebook',
+    link: 'https://www.facebook.com/alhadaf.estate/',
+    name: 'facebook'
+  },
+  {
+    icon: 'uil:instagram-alt',
+    link: 'https://www.instagram.com/alhadaf.estate/',
+    name: 'instagram'
+  },
+  {
+    icon: 'uil:linkedin',
+    link: 'https://www.linkedin.com/company/alhadafestate/',
+    name: 'linkedin'
+  },
+  {
+    icon: 'uil:youtube',
+    link: 'https://www.youtube.com/@Alhadaf.estate',
+    name: 'youtube'
+  },
+]
+
 const scroll = (id) => {
   useGsap.to(window, {
     scrollTo: `#${id}`,
@@ -129,45 +151,55 @@ const scroll = (id) => {
 footer {
   // padding: 61px 46px 60px 20px;
   padding: 40px;
+
   .container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 50px;
     row-gap: 40px;
   }
+
   .logo-slogan {
     display: flex;
     flex-direction: column;
     gap: 35px;
+
     .slogan {
       font-size: 15px;
       font-weight: 300;
       color: rgba(0, 0, 0, 0.795);
     }
   }
+
   .navigation {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
+
     @media (max-width: 766px) {
       align-items: center;
     }
+
     .title {
       font-size: 21px;
     }
+
     li {
       font-weight: 700;
       cursor: pointer;
     }
   }
+
   .contact-info {
     display: flex;
     flex-direction: column;
     gap: 23px;
+
     .title {
       font-size: 20px;
       font-weight: 300;
     }
+
     .button {
       display: flex;
       align-items: center;
@@ -178,10 +210,12 @@ footer {
       padding: 5px;
       width: fit-content;
       cursor: pointer;
+
       * {
         pointer-events: none;
         user-select: none;
       }
+
       .icon {
         width: 34px;
         height: 34px;
@@ -191,28 +225,39 @@ footer {
         align-items: center;
         justify-content: center;
       }
+
       span {
         font-size: 15px;
         padding: 5px;
       }
     }
+
     .email-web {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
+    .socialLinks {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 30px;
+    }
   }
+
   .subscribtion {
     h1 {
       font-size: 30px;
       font-weight: 500;
       margin-bottom: 20px;
     }
+
     p {
       font-size: 17px;
       color: #00000080;
       margin-bottom: 30px;
     }
+
     .input {
       input {
         width: 100%;
@@ -222,6 +267,7 @@ footer {
         background: none;
         margin-bottom: 20px;
       }
+
       button {
         background-color: $main-color;
         padding: 10px 20px;
@@ -230,6 +276,7 @@ footer {
       }
     }
   }
+
   .location {
     .image {
       width: 100%;

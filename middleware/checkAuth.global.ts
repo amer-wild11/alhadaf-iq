@@ -7,12 +7,15 @@ export default defineNuxtRouteMiddleware((to, from) => {
     return navigateTo("/dashboard");
   }
 
-  if (
-    !isAuthenticated &&
-    to.fullPath != "/" &&
-    to.fullPath != "/projects" &&
-    to.fullPath != "/login"
-  ) {
+  const protectedRoutes = [
+    "/dashboard",
+    "/customers",
+    "/partners",
+    "/properties",
+  ];
+
+  // إذا لم يكن المستخدم موثقاً وحاول الوصول إلى صفحة تتطلب تسجيل دخول
+  if (!isAuthenticated && protectedRoutes.includes(to.fullPath)) {
     return navigateTo("/login");
   }
 });
